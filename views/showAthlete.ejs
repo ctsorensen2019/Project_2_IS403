@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athlete Details</title>
+</head>
+<body>
+    <label><b>Athlete Details:</b></label>
+    <br><br>
+    <% for (let iCount = 0; iCount < myAthlete.length; iCount++) { %>
+        <label><%= myAthlete[iCount].id %> - <%= myAthlete[iCount].athfirstname %> - <%= myAthlete[iCount].schooldescription %> - <%= myAthlete[iCount].statistic %> - <%= myAthlete[iCount].athlastname %> - <%= myAthlete[iCount].statisticdescription %> - <%= myAthlete[iCount].athlastname %></label>
+        <br><br>
+    <% } %>
+    <br><br>
+</body>
+</html>

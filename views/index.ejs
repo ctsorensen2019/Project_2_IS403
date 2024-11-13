@@ -1,3 +1,43 @@
-//This is your mom speaking
-<!-- this is ethan speaking -->
-// doe sthis push work
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Athlete Database</title>
+</head>
+<body>
+    <h1>Athlete Database</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Athlete ID</th>
+                <th>Athlete First Name</th>
+                <th>Athlete Last Name</th>
+                <th>Athlete Sport</th>
+                <th>Athlete School</th>
+                <th>Athlete Statistic</th>
+                <th>Athlete Statistic Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(pokemon => { %>
+                <tr>
+                    <td><%= athlete.id %></td>
+                    <td><%= athlete.athfirstname %></td>
+                    <td><%= athlete.athlastname %></td>
+                    <td><%= sport.sportdescription %></td>
+                    <td><%= school.schooldescription %></td>
+                    <td><%= statistics.statistic %></td>
+                    <td><%= statistics.statisticdescription %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <br>
+    <form action="/showAthlete" method="POST">
+        <label for="athlete_id">Enter Athlete ID:</label>
+        <input type="number" name="athlete_id" required>
+        <button type="submit">Show Athlete</button>
+    </form>
+</body>
+</html>
