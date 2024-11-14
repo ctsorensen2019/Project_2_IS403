@@ -43,5 +43,19 @@ app.get("/", async (req, res) => {
 //    });
 //})
 
+app.get('/login', (req, res) => {
+    res.render('login', { errorMessage: null });
+});
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    // Validate credentials (replace with your logic)
+    if (username === 'user' && password === 'password') {
+        res.send('Login successful');
+    } else {
+        res.render('login', { errorMessage: 'Invalid username or password' });
+    }
+});
+
 // Start the server
 app.listen(port, () => console.log("Athlete Express App has started and server is listening on port 3500!"));
