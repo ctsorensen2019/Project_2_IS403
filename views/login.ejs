@@ -19,7 +19,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 500px;
         }
         .login-container h2 {
             text-align: center;
@@ -31,11 +31,12 @@
             margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         .login-container button {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #293079;
             border: none;
             color: white;
             border-radius: 4px;
@@ -43,7 +44,7 @@
             font-size: 16px;
         }
         .login-container button:hover {
-            background-color: #45a049;
+            background-color: #293079;
         }
         .error-message {
             color: red;
@@ -54,7 +55,7 @@
 <body>
 
 <div class="login-container">
-    <h2>Login</h2>
+    <h2>IQSA Statistics Login</h2>
     <% if (errorMessage) { %>
         <p class="error-message"><%= errorMessage %></p>
     <% } %>
