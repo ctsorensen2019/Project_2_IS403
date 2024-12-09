@@ -26,7 +26,12 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-// Root route to display all Pokémon data
+//Middelware to get CSS working
+app.use(express.static(path.join(__dirname, 'assets')));
+
+
+
+// Root route to display all data
 app.get("/", async (req, res) => {
         knex.select().from('athlete').orderBy('athlastname').then( athls => {
             res.render("index", { athlete: athls });
@@ -35,6 +40,7 @@ app.get("/", async (req, res) => {
             res.status(500).json({err});
         });
     });
+
 
 // Route to display a specific Pokémon based on ID
 //app.get("/searchAthlete", (req, res) => {
