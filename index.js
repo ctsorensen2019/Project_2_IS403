@@ -9,14 +9,14 @@ const port = process.env.PORT || 3500;
 const knex = require("knex")({
     client: "pg",
     connection: {
-        host: process.env.RDS_HOSTNAME || "awseb-e-hepbe4apek-stack-awsebrdsdatabase-7ahil2gnwyg7.czigc2goqitw.us-east-1.rds.amazonaws.com",
-        user: process.env.RDS_USERNAME || "ebroot",
-        password: process.env.RDS_PASSWORD || "group1-4", 
-        database: process.env.RDS_DB_NAME || "ebdb",
+        host: process.env.RDS_HOSTNAME || "localhost",
+        user: process.env.RDS_USERNAME || "postgres",
+        password: process.env.RDS_PASSWORD || "Christian0427", 
+        database: process.env.RDS_DB_NAME || "project 2",
         port: process.env.RDS_PORT|| 5432, 
         // Uncomment the below code when connecting to RDS
         //ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
-        ssl: { rejectUnauthorized: false }
+        //ssl: { rejectUnauthorized: false }
     }
   });
 
