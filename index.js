@@ -33,15 +33,15 @@ app.get("/", async (req, res) => {
     });
 
 // Route to display a specific Pokémon based on ID
-app.get("/searchAthlete", (req, res) => {
-    //NOTICE query since I am retrieving data from a form using the get method
-    knex.select().from('athlete').where('athlastname', req.query.searchName.toUpperCase() ).first().then( athls => {
-        res.render("displayAthlete", { athlete: athls });
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json({err});
-    });
-})
+//app.get("/searchAthlete", (req, res) => {
+//    //NOTICE query since I am retrieving data from a form using the get method
+//    knex.select().from('athlete').where('athlastname', req.query.searchName.toUpperCase() ).first().then( athls => {
+//        res.render("displayAthlete", { athlete: athls });
+//    }).catch(err => {
+//        console.log(err);
+//        res.status(500).json({err});
+//    });
+//})
 
 app.get('/login', (req, res) => {
     res.render('login', { errorMessage: null });
