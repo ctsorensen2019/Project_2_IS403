@@ -1,20 +1,24 @@
 let express = require('express');
 let app = express();
+
 let path = require('path');
 
-const port = 3500;
+const port = process.env.PORT || 3500;
 
 // Configure knex to connect to the assignment3 database
 const knex = require("knex")({
     client: "pg",
     connection: {
-        host: "localhost",
-        user: "postgres",
-        password: "Not2ez43than",
-        database: "IQSports",
-        port: 5432
+        host: process.env.RDS_HOSTNAME || "awseb-e-hepbe4apek-stack-awsebrdsdatabase-7ahil2gnwyg7.czigc2goqitw.us-east-1.rds.amazonaws.com",
+        user: process.env.RDS_USERNAME || "ebroot",
+        password: process.env.RDS_PASSWORD || "group1-4", 
+        database: process.env.RDS_DB_NAME || "ebdb",
+        port: process.env.RDS_PORT|| 5432, 
+        // Uncomment the below code when connecting to RDS
+        //ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
+        ssl: { rejectUnauthorized: false }
     }
-});
+  });
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
