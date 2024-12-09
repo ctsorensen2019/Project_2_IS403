@@ -2,17 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athlete Details</title>
+    <title>Athlete Database</title>
 </head>
 <body>
-    <label><b>Athlete Details:</b></label>
-    <br><br>
-    <% for (let iCount = 0; iCount < myAthlete.length; iCount++) { %>
-        <label><%= myAthlete[iCount].id %> - <%= myAthlete[iCount].athfirstname %> - <%= myAthlete[iCount].schooldescription %> - <%= myAthlete[iCount].statistic %> - <%= myAthlete[iCount].athlastname %> - <%= myAthlete[iCount].statisticdescription %> - <%= myAthlete[iCount].athlastname %></label>
-        <br><br>
-    <% } %>
-    <br><br>
+    <h1>Athlete Database</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Athlete ID</th>
+                <th>Athlete First Name</th>
+                <th>Athlete Last Name</th>
+                <th>Athlete Sport</th>
+                <th>Athlete School</th>
+                <th>Athlete Statistic</th>
+                <th>Athlete Statistic Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% athlete.forEach(athlete => { %>
+                <tr>
+                    <td><%= athlete.id %></td>
+                    <td><%= athlete.athfirstname %></td>
+                    <td><%= athlete.athlastname %></td>
+                    <td><%= sport.sportdescription %></td>
+                    <td><%= school.schooldescription %></td>
+                    <td><%= statistics.statistic %></td>
+                    <td><%= statistics.statisticdescription %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <br>
+    <form action="/showAthlete" method="POST">
+        <label for="athlete_id">Enter Athlete ID:</label>
+        <input type="number" name="athlete_id" required>
+        <button type="submit">Show Athlete</button>
+    </form>
 </body>
 </html>
