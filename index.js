@@ -1,7 +1,13 @@
-let express = require('express');
-let app = express();
+const express = require('express');
+const path = require('path');
+const app = express();
 
-let path = require('path');
+// Serve static files
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+// Set up the view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 const port = process.env.PORT || 3500;
 
@@ -20,26 +26,17 @@ const knex = require("knex")({
     }
   });
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+
 
 // Middleware to parse URL-encoded bodies
-app.use(express.urlencoded({ extended: true }));
-
-//Middelware to get CSS working
-app.use(express.static(path.join(__dirname, 'assets')));
+//app.use(express.urlencoded({ extended: true }));
 
 
 
 // Root route to display all data
-app.get("/", async (req, res) => {
-        knex.select().from('athlete').orderBy('athlastname').then( athls => {
-            res.render("index", { athlete: athls });
-        }).catch(err => {
-            console.log(err);
-            res.status(500).json({err});
-        });
-    });
+app.get('/', (req, res) => {
+    res.render('index');
+  });
 
 
 // Route to display a specific Pokémon based on ID
