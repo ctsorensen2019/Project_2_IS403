@@ -83,21 +83,29 @@
     }
 
     button {
-      background-color: #ffc107;
+      background-color: #293079;
       color: #fff;
       cursor: pointer;
       border: none;
     }
 
     button:hover {
-      background-color: #e0a800;
+      background-color: #0d0f27;
     }
   </style>
 </head>
 
 <body>
   <h1>Athlete Database</h1>
-
+  <div id="athlete_search">
+    <!-- Search form -->
+  <form action="/showAthlete" method="POST">
+    <label for="athlete_id">Enter Athlete ID:</label>
+    <input type="number" id="athlete_id" name="athlete_id" required>
+    <button type="submit">Search</button>
+  </form>
+</div>
+<div id="athlete_form">
   <!-- Table of athlete -->
   <table>
     <thead>
@@ -144,13 +152,19 @@
       <% } %>
     </tbody>
   </table>
+  <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
+    <!-- Add Athlete Button -->
+    <form action="/addAthlete" method="GET">
+        <button type="submit">Add Athlete</button>
+    </form>
 
-  <!-- Search form -->
-  <form action="/showAthlete" method="POST">
-    <label for="athlete_id">Enter Athlete ID:</label>
-    <input type="number" id="athlete_id" name="athlete_id" required>
-    <button type="submit">Search</button>
-  </form>
+    <!-- Add User Button -->
+    <form action="/" method="GET">
+        <button type="submit">Return to Home Page</button>
+    </form>
+</div>
+</div>
+  
 </body>
 
 </html>
