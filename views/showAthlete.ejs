@@ -13,22 +13,22 @@
                 <th>Athlete ID</th>
                 <th>Athlete First Name</th>
                 <th>Athlete Last Name</th>
-                <th>Athlete Sport</th>
-                <th>Athlete School</th>
-                <th>Athlete Statistic</th>
-                <th>Athlete Statistic Description</th>
+                <th>Sport</th>
+                <th>School</th>
+                <th>Statistic</th>
+                <th>Statistic Description</th>
             </tr>
         </thead>
         <tbody>
             <% athlete.forEach(athlete => { %>
                 <tr>
-                    <td><%= athlete.id %></td>
+                    <td><%= athlete.athleteid %></td>
                     <td><%= athlete.athfirstname %></td>
                     <td><%= athlete.athlastname %></td>
-                    <td><%= sport.sportdescription %></td>
-                    <td><%= school.schooldescription %></td>
-                    <td><%= statistics.statistic %></td>
-                    <td><%= statistics.statisticdescription %></td>
+                    <td><%= athlete.sportdescription %></td>
+                    <td><%= athlete.schooldescription %></td>
+                    <td><%= athlete.statistic %></td>
+                    <td><%= athlete.statisticdescription %></td>
                 </tr>
             <% }) %>
         </tbody>
@@ -36,7 +36,7 @@
     <br>
     <form action="/showAthlete" method="POST">
         <label for="athlete_id">Enter Athlete ID:</label>
-        <input type="number" name="athlete_id" required>
+        <input type="number" id="athlete_id" name="athlete_id" required>
         <button type="submit">Show Athlete</button>
     </form>
 </body>
