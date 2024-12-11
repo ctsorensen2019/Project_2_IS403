@@ -129,34 +129,25 @@
       </tr>
     </thead>
     <tbody>
-      <% if (athlete && athlete.length > 0) { %>
+      <% if (athletes && athletes.length > 0) { %>
         <% athletes.forEach(athlete => { %>
           <tr>
-              <td><%= athlete.athleteid %></td>
-              <td><%= athlete.athfirstname %></td>
-              <td><%= athlete.athlastname %></td>
-              <td><%= athlete.schoolid %></td>
-              <td><%= athlete.employeeid %></td>
-              <td><%= athlete.phonenumber %></td>
-              <td><%= athlete.email %></td>
-              <td>
-                  <form action="/editAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
-                      <button type="submit" class="btn btn-warning">Edit</button>
-                  </form>
-                  <form action="/deleteAthlete/<%= athlete.athleteid %>" method="POST" style="display:inline;">
-                      <button type="submit" class="btn btn-danger">Delete</button>
-                  </form>
-              </td>
+            <td><%= athlete.athleteid %></td>
+            <td><%= athlete.athfirstname %></td>
+            <td><%= athlete.athlastname %></td>
+            <td><%= athlete.schoolid %></td>
+            <td><%= athlete.employeeid %></td>
+            <td><%= athlete.phonenumber %></td>
+            <td><%= athlete.email %></td>
           </tr>
-      <% }) %>
-      
+        <% }) %>
       <% } else { %>
-        <!-- Message when no data is available -->
         <tr>
-          <td colspan="7">No data available</td>
+          <td colspan="7">No athletes found.</td>
         </tr>
       <% } %>
     </tbody>
+    
   </table>
   <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
     <!-- Add Athlete Button -->
