@@ -102,16 +102,14 @@
     <!-- Search form -->
     <form action="/searchAthlete" method="GET">
         <label for="first_name">Athlete First Name:</label>
-        <input type="text" id="first_name" name="first_name">
+        <input type="text" id="first_name" name="first_name" value="<%=first_name%>">
         
         <label for="last_name">Athlete Last Name:</label>
-        <input type="text" id="last_name" name="last_name">
-        
-        <label for="sport">Sport:</label>
-        <input type="text" id="sport" name="sport">
+        <input type="text" id="last_name" name="last_name"value="<%=last_name%>">
         
         <button type="submit">Search</button>
       </form>
+      <form action="/showAthlete" method="GET"><button type="submit">Clear Search</button></form>
 </div>
 <div id="athlete_form">
   <!-- Table of athlete -->

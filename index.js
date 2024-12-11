@@ -36,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Root route to display all data
 app.get('/', (req, res) => {
+    security = false;
     res.render('index');
 });
 
@@ -57,14 +58,28 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    // Validate credentials (replace with your logic)
-    if (username === 'user' && password === 'password') {
-        security = true;
-        res.render('showAthlete', {security});
-    } else {
-        res.render('login', { errorMessage: 'Invalid username or password' });
-    }
+
+    knex('employees')
+        .where({ username: username, password: password })
+        .first() // Use .first() to get a single result (or null if no match)
+        .then((employee) => {
+            // If no employee is found, the result will be null
+            if (employee) {
+                // Login successful
+                security = true;
+                res.redirect('showAthlete');
+            } else {
+                // Login failed (username or password incorrect)
+                res.render('login', { errorMessage: 'Invalid username or password' });
+            }
+        })
+        .catch((err) => {
+            // Handle any errors during the query
+            console.error('Error during login:', err);
+            res.status(500).send('Internal server error');
+        });
 });
+
 
 
 ///////
@@ -92,29 +107,31 @@ app.get('/showAthlete', (req, res) => {
 
 // search athlete
 app.get('/searchAthlete', (req, res) => {
-    const { first_name, last_name, sport } = req.query; // Fetch data from query parameters
+    const { first_name, last_name } = req.query; // Fetch data from query parameters
+
+    // Convert to uppercase if the values exist
+    const firstNameUpper = first_name ? first_name.toUpperCase() : '';
+    const lastNameUpper = last_name ? last_name.toUpperCase() : '';
 
     knex('athlete')
         .modify((queryBuilder) => {
-            if (first_name) {
-                queryBuilder.where('first_name', 'like', `%${first_name}%`);
+            if (firstNameUpper) {
+                queryBuilder.where('athfirstname', 'like', `%${firstNameUpper}%`);
             }
-            if (last_name) {
-                queryBuilder.where('last_name', 'like', `%${last_name}%`);
-            }
-            if (sport) {
-                queryBuilder.where('sport', 'like', `%${sport}%`);
+            if (lastNameUpper) {
+                queryBuilder.where('athlastname', 'like', `%${lastNameUpper}%`);
             }
         })
         .select('*') // Adjust fields if necessary
-        .then((athlete) => {
-            res.render('showAthlete', { athlete, errorMessage: null });
+        .then((athletes) => {
+            res.render('searchAthlete', { athletes, first_name, last_name, security, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
-            res.render('showAthlete', { athlete: [], errorMessage: 'Error fetching athlete data.' });
+            res.render('searchAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
 
 
 //Add//
@@ -410,7 +427,7 @@ app.post('/deleteSchool/:schoolid', (req, res) => {
         })
         .catch(error => {
             console.error('Error deleting school:', error);
-            res.status(500).send('Internal Server Error');
+            res.status(500).send('CANNOT DELETE SCHOOL IF STUDENT IS LISTED THERE');
         });
 });
 
