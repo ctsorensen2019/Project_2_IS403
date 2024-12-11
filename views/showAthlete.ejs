@@ -141,11 +141,11 @@
             <td><%= athlete.StatisticDescription %></td>
             <td>
                 <!-- Edit button -->
-                <form action="/editAthlete/<%= row.username %>" method="GET" style="display:inline;">
+                <form action="/editAthlete/<%= row.AthleteID %>" method="GET" style="display:inline;">
                   <button type="submit" class="btn btn-warning">Edit</button>
                 </form>
                 <!-- Delete button with confirmation -->
-                <form action="/deleteAthlete/<%= row.username %>" method="POST" style="display:inline;">
+                <form action="/deleteAthlete/<%= row.AthleteID %>" method="POST" style="display:inline;">
                   <button type="submit" class="btn btn-warning"
                     onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
                 </form>
