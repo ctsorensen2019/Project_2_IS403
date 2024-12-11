@@ -140,33 +140,110 @@ app.get('/searchAthlete', (req, res) => {
 
 
 //Shows the changes on the client side
-    app.post('/addAthlete', (req, res) => {
-        const { athfirstname, athlastname, email, phonenumber, schoolid, employeeid } = req.body;
+app.post('/addAthlete', (req, res) => {
+    const {
+        athfirstname,
+        athlastname,
+        email,
+        phonenumber,
+        schoolid,
+        employeeid,
+        blocks,
+        steals,
+        turnovers,
+        twopointers,
+        threepointers,
+        tackles,
+        catches,
+        sacks,
+        interceptions,
+        touchdowns
+    } = req.body;
 
-        // Validate foreign keys
-        Promise.all([
-            knex('school').where({ schoolid }).first(),
-            knex('employees').where({ employeeid }).first()
-        ])
-            .then(([school, employee]) => {
-                if (!school || !employee) {
-                    throw new Error('Invalid school ID or employee ID');
-                }
-                return knex('athlete').insert({
-                    athfirstname: athfirstname.toUpperCase(),
-                    athlastname: athlastname.toUpperCase(),
-                    email: email.toUpperCase(),
-                    phonenumber,
-                    schoolid,
-                    employeeid
-                });
-            })
-            .then(() => res.redirect('/showAthlete'))
-            .catch(error => {
-                console.error('Error adding athlete:', error);
-                res.status(500).send('Internal Server Error');
-            });
+    // Set default values for missing stats
+    const stats = {
+        blocks: blocks || 0,
+        steals: steals || 0,
+        turnovers: turnovers || 0,
+        twopointers: twopointers || 0,
+        threepointers: threepointers || 0,
+        tackles: tackles || 0,
+        catches: catches || 0,
+        sacks: sacks || 0,
+        interceptions: interceptions || 0,
+        touchdowns: touchdowns || 0
+    };
+
+    // Validate schoolid and employeeid, then get statistics descriptions
+    knex.transaction(async (trx) => {
+        try {
+            // Step 1: Validate foreign keys and fetch statistics descriptions in a single transaction
+            const [school, employee, statsDescriptions] = await Promise.all([
+                trx('school').where({ schoolid }).first(),
+                trx('employees').where({ employeeid }).first(),
+                trx('statistics').whereIn('statisticdescription', [
+                    'blocks', 'steals', 'turnovers', '2-pointers', '3-pointers',
+                    'tackles', 'catches', 'sacks', 'interceptions', 'touchdowns'
+                ])
+            ]);
+
+            if (!school || !employee) {
+                throw new Error('Invalid school ID or employee ID');
+            }
+
+            if (statsDescriptions.length !== 10) {
+                throw new Error('Missing statistics descriptions');
+            }
+
+            // Step 2: Insert athlete into 'athlete' table
+            const [athlete] = await trx('athlete').insert({
+                athfirstname: athfirstname.toUpperCase(),
+                athlastname: athlastname.toUpperCase(),
+                email: email.toUpperCase(),
+                phonenumber,
+                schoolid,
+                employeeid
+            }).returning('athleteid'); // Get athleteid for the inserted athlete
+
+            const athleteid = athlete.athleteid;
+
+            // Step 3: Insert athlete stats into 'athletestatistics' table with hardcoded sportid
+
+            const athleteStats = [
+                // Basketball stats (sportid = 1)
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'blocks').statisticid, statistic: stats.blocks, sportid: 1 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'steals').statisticid, statistic: stats.steals, sportid: 1 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'turnovers').statisticid, statistic: stats.turnovers, sportid: 1 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === '2-pointers').statisticid, statistic: stats.twopointers, sportid: 1 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === '3-pointers').statisticid, statistic: stats.threepointers, sportid: 1 },
+
+                // Football stats (sportid = 4)
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'tackles').statisticid, statistic: stats.tackles, sportid: 4 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'catches').statisticid, statistic: stats.catches, sportid: 4 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'sacks').statisticid, statistic: stats.sacks, sportid: 4 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'interceptions').statisticid, statistic: stats.interceptions, sportid: 4 },
+                { athleteid, statisticid: statsDescriptions.find(s => s.statisticdescription === 'touchdowns').statisticid, statistic: stats.touchdowns, sportid: 4 }
+            ];
+
+            // Step 4: Insert stats into 'athletestatistics'
+            await trx('athletestatistics').insert(athleteStats);
+
+            // Step 5: Commit the transaction and redirect
+            await trx.commit();
+            res.redirect('/showAthlete');
+        } catch (error) {
+            // Rollback in case of error
+            await trx.rollback();
+            console.error('Error adding athlete:', error);
+            res.status(500).send('Internal Server Error');
+        }
     });
+});
+
+
+
+
+
 
 
 
@@ -521,21 +598,6 @@ app.get('/basketballStats/:athleteid', async (req, res) => {
     res.render('basketballStats', {security, stats})
 });
 // post
-
-
-
-// edit football stats
-// get 
-app.get('/footballStats/:athleteid', async (req, res) => {
-    const id = req.params.athleteid
-    const stats = await knex('athletestatistics')
-    .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
-    .join('sport', 'sport.sportid','=','athletestatistics.sportid')
-    .where({sportdescription : 'football', athleteid : id})
-    res.render('basketballStats', {security, stats})
-});
-
-//post
 app.post('/basketballStats/:athleteid', async (req, res) => {
     const athleteid = req.params.athleteid;
     const statistics = req.body;  // Now, req.body will contain a flat structure with statistic_<statisticid>
@@ -568,6 +630,54 @@ app.post('/basketballStats/:athleteid', async (req, res) => {
     } catch (err) {
       console.error(err);
       res.status(500).send('Error updating basketball statistics.');
+    }
+  });
+
+
+// edit football stats
+// get 
+app.get('/footballStats/:athleteid', async (req, res) => {
+    const id = req.params.athleteid
+    const stats = await knex('athletestatistics')
+    .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
+    .join('sport', 'sport.sportid','=','athletestatistics.sportid')
+    .where({sportdescription : 'football', athleteid : id})
+    res.render('basketballStats', {security, stats})
+});
+
+//post
+app.post('/footballStats/:athleteid', async (req, res) => {
+    const athleteid = req.params.athleteid;
+    const statistics = req.body;  // Now, req.body will contain a flat structure with statistic_<statisticid>
+  
+    // Make sure there is at least one statistic to update
+    if (!statistics || Object.keys(statistics).length === 0) {
+      return res.status(400).send('No statistics provided.');
+    }
+  
+    try {
+      // Loop through all the statistic values in the request body
+      const updatePromises = Object.keys(statistics).map((key) => {
+        // Extract the statistic ID from the key
+        const statisticid = key.replace('statistic_', '');  // Extract statisticid from "statistic_<id>"
+  
+        // Get the value for that statistic
+        const statisticValue = statistics[key];
+  
+        // Update the statistic in the athletestatistics table
+        return knex('athletestatistics')
+          .where({ athleteid: athleteid, statisticid: statisticid })
+          .update({ statistic: statisticValue });
+      });
+  
+      // Wait for all updates to complete
+      await Promise.all(updatePromises);
+  
+      // Redirect to the athlete's basketball stats page
+      res.redirect(`/statsAthlete/${athleteid}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error updating football statistics.');
     }
   });
   

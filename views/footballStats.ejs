@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Football Stats</title>
+
+    <!-- Include your stylesheets and fonts here -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <style>
+        /* Your existing styles */
+    </style>
+</head>
+<body>
+    <h1>Edit Basketball Stats</h1>
+    <form action="/footballStats/<%= stats[0].athleteid %>" method="POST">
+        <% stats.forEach(stat => { %>
+          <label for="<%= stat.statisticid %>"><%= stat.statisticdescription %></label>
+          <input type="number" 
+                 id="<%= stat.statisticid %>" 
+                 name="statistic_<%= stat.statisticid %>" 
+                 value="<%= stat.statistic %>" 
+                 required>
+        <% }) %>
+        <button type="submit">Save Changes</button>
+      </form>
+      
+      
+    </form>
+</body>
+</html>
