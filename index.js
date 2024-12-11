@@ -21,8 +21,8 @@ const knex = require("knex")({
         database: process.env.RDS_DB_NAME || "ebdb",
         port: process.env.RDS_PORT || 5432,
         // Uncomment the below code when connecting to RDS
-        ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
-        //ssl: { rejectUnauthorized: false }
+        // ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
+        ssl: { rejectUnauthorized: false }
     }
 });
 
@@ -75,22 +75,25 @@ app.post('/login', (req, res) => {
 
 app.get('/showAthlete', (req, res) => {
     // Fetch athlete data from the database
-    knex('Athlete') // Replace 'administration' with the correct table name for athletes
+    knex('Athlete')
         .select('*') // Adjust fields if needed
-        .then(athlete => {
-            res.render('showAthlete', { athlete, errorMessage: null });
+        .then((results) => {
+            // Pass the results directly as `athlete`
+            res.render('showAthlete', { athlete: results, errorMessage: null });
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Error fetching athletes:', error);
-            res.render('showAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
+            // Pass an empty array for `athlete` and include an error message
+            res.render('showAthlete', { athlete: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
 
 // search athlete
 app.get('/searchAthlete', (req, res) => {
     const { first_name, last_name, sport } = req.query; // Fetch data from query parameters
 
-    knex('athlete')
+    knex('Athlete')
         .modify((queryBuilder) => {
             if (first_name) {
                 queryBuilder.where('first_name', 'like', `%${first_name}%`);
@@ -103,8 +106,8 @@ app.get('/searchAthlete', (req, res) => {
             }
         })
         .select('*') // Adjust fields if necessary
-        .then((athletes) => {
-            res.render('showAthlete', { athletes, errorMessage: null });
+        .then((athlete) => {
+            res.render('showAthlete', { athlete, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
