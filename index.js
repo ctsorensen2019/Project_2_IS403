@@ -131,27 +131,25 @@ knex('athlete')
 
 
 //configures the edit user functionality
-app.get('/editUser/:username', (req, res) => {
-const username = req.params.username;
-
-
-if (!username) {
-    console.error('Username parameter is missing');
-    return res.status(400).send('Username is required');
-}
-
-knex('administration')
-    .where('username', username)
+app.get('/editAthlete/:id', (req, res) => {
+    const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
+    const athlastname = req.body.athlastname || '';
+    const sportdescription = req.body.sportdescription || '';
+    const schooldescription = req.body.schooldescription || '';
+    const statistic = parseFloat(req.body.statistic) || 0.0;
+    const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
+knex('athlete')
+    .where('id', id)
     .first()
-    .then(administration => {
-        if (!administration) {
-            console.error(`No user found with username: ${username}`);
-            return res.status(404).send('User not found');
+    .then(athlete => {
+        if (!athlete) {
+            console.error(`No Athlete found with id: ${id}`);
+            return res.status(404).send('Athlete not found');
         }
-        res.render('editUser', { administration, security });
+        res.render('editAthlete', { athlete, security });
     })
     .catch(error => {
-        console.error('Error fetching Users for editing:', error);
+        console.error('Error fetching Athletes for editing:', error);
         res.status(500).send('Internal Server Error');
     });
 });
@@ -159,26 +157,29 @@ knex('administration')
 
 
 //further configures the edit user, and allows for edits
-app.post('/editUser/:username', (req, res) => {
-const username = req.params.username; // Get the current username from the URL
-const newAccessControl = req.body.accesscontrol; // Get the updated accesscontrol value from the form
-
-if (!username || !newAccessControl) {
-    console.error('Missing username or accesscontrol in request');
-    return res.status(400).send('Username and Access Control are required');
-}
-
+app.post('/editAthlete/:id', (req, res) => {
+    const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
+    const athlastname = req.body.athlastname || '';
+    const sportdescription = req.body.sportdescription || '';
+    const schooldescription = req.body.schooldescription || '';
+    const statistic = parseFloat(req.body.statistic) || 0.0;
+    const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
 // Update only the accesscontrol field for the given username
-knex('administration')
-    .where('username', username) // Ensure you are updating the correct user
+knex('athlete')
+    .where('id', id) // Ensure you are updating the correct user
     .update({
-        accesscontrol: newAccessControl, // Update accesscontrol field
+        athfirstname: athfirstname.toUpperCase(), 
+        athlastname: athlastname.toUpperCase(),
+        sportdescription: sportdescription.toUpperCase(),
+        schooldescription: schooldescription.toUpperCase(),
+        statistic: statistic,
+        statisticdescription: statisticdescription.toUpperCase()
     })
     .then(() => {
-        res.redirect('/userMaint'); // Redirect after successful update
+        res.redirect('/showAthlete'); // Redirect after successful update
     })
     .catch(error => {
-        console.error('Error updating User:', error);
+        console.error('Error updating Athlete:', error);
         res.status(500).send('Internal Server Error');
     });
 });
@@ -189,16 +190,16 @@ knex('administration')
 
 
 //Allows for deletion
-app.post('/deleteUser/:username', (req, res) => {
-const username = req.params.username;
-knex('administration')
-  .where('username', username)
+app.post('/deleteAthlete/:id', (req, res) => {
+    const athleteid = req.params.id;
+knex('athlete')
+  .where('id', id)
   .del() // Deletes the record with the specified username
   .then(() => {
-    res.redirect('/userMaint'); // Redirect to the user list after deletion
+    res.redirect('/showAthlete'); // Redirect to the user list after deletion
   })
   .catch(error => {
-    console.error('Error deleting User:', error);
+    console.error('Error deleting Athlete:', error);
     res.status(500).send('Internal Server Error');
   });
 });
