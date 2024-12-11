@@ -133,19 +133,15 @@ app.post('/addAthlete', (req, res) => {
     // Extract form values from req.body
     const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
     const athlastname = req.body.athlastname || '';
-    const sportdescription = req.body.sportdescription || '';
-    const schooldescription = req.body.schooldescription || '';
-    const statistic = parseFloat(req.body.statistic) || 0.0;
-    const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
+    const email = req.body.email || '';
+    const phonenumber = req.body.phonenumber || ''; // Default to empty string if not provided
     // Insert the new Characters into the database
     knex('athlete')
         .insert({
             athfirstname: athfirstname.toUpperCase(),
             athlastname: athlastname.toUpperCase(),
-            sportdescription: sportdescription.toUpperCase(),
-            schooldescription: schooldescription.toUpperCase(),
-            statistic: statistic,
-            statisticdescription: statisticdescription.toUpperCase()
+            email: email.toUpperCase(),
+            phonenumber: phonenumber
         })
         .then(() => {
             res.redirect('/showAthlete'); // Redirect to the user list page after adding
