@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Athlete</title>
+    <!--Import the stylesheets from the styling folder-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* Sets the background color for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sets styling for the title */
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        /* Styling for the form */
+        form {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #F9F9F9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sets styling for the titles of each input field */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /*Sets styling for the rest of the form */
+        input, select, button, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Sets styling for the submit button */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Allows for changing of the color of the submit button on hovering over it */
+        button:hover {
+            background-color: #45A049;
+        }
+
+        /* puts margin after the end of the radio group */
+        .radio-group {
+            margin-bottom: 15px;
+        }
+
+        /* Puts margin next to the radio group selection so the buttons are not directly next to them */
+        .radio-group label {
+            margin-right: 15px;
+        }
+
+        /*CSS for the return to home */
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /*Hover CSS for the return button */
+        .btn-back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Only the user logged in with admin access can view this page-->
+    <!-- <% if (security) { %> -->
+    <h1>Add Volunteer</h1>
+    <!-- Form for adding a user -->
+    <form action="/addVolunteer" method="POST">
+
+        <!-- First name text input field -->
+        <div>
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
+        </div>
+
+        <!-- Last name text input field -->
+        <div>
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
+        </div>
+
+        <!-- Phone number input field, only allows numbers from 0-9 and it must have ten digits-->
+        <div>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number" required>
+        </div>
+
+        <!-- Email input field, must be a valid email address -->
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter email address" required>
+        </div>
+
+        <!-- Radio group for sewing level that is a dropdown that only allows for 3 selections so as to not mess up the database -->
+        <div class="form-group">
+            <label for="sewing_level"><strong>Sewing Level</strong></label>
+            <select id="sewing_level" name="sewing_level" class="form-control" required>
+              <option value="" disabled selected>Select your sewing level</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+          
+        
+        <!-- Estimated Hours input field, must be a number -->
+        <div>
+            <label for="esthour">Monthly Estimated Hours Available</label>
+            <input type="number" id="esthour" name="esthour" placeholder="Enter estimated hours available">
+        </div>
+
+        <!-- How discovered input field. Is a dropdown -->
+        <div class="form-group">
+            <label for="how-found"><strong>How did you discover us?</strong></label>
+            <select id="how-found" name="how_found" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="Social Media">Social Media</option>
+              <option value="Friend/Family">Friend/Family</option>
+              <option value="Email">Email</option>
+              <option value="JustServe">JustServe</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+        <!-- Number input field for zip code that only allows the 5 digit format of a zip code  -->
+        <div>
+            <label for="zipcode">ZIP Code</label>
+            <input type="number" id="zipcode" name="zipcode" placeholder="Enter ZIP code" pattern="[0-9]{5}" title="Enter a valid 5-digit ZIP code" required>
+        </div>
+
+        <!-- Username Dropdown. Only shows available usernames that are not already attached to a user. Allows the user to not select a username -->
+        <div class="form-group">
+            <label for="username"><strong>Username</strong></label>
+            <select id="username" name="username">
+                <option value="">-- Select a Username --</option>
+                <% availableUsernames.forEach(user => { %>
+                    <option value="<%= user.username %>"><%= user.username %></option>
+                <% }) %>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">Add Volunteer</button>
+    </form>
+
+    <!-- Returns to the maintenance page for volunteers -->
+    <a href="/volunteerMaint" class="btn-back">Back to Volunteer Maintenance</a>
+    <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
+    <% } else { %>
+        <p>Access Denied: Please Log In</p>
+        <form action="/login" method="GET">
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+    <% } %>
+</body>
+</html>
