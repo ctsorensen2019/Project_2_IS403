@@ -93,7 +93,7 @@
 </head>
 <body>
     <!-- Only the user logged in with admin access can view this page-->
-    <!-- <% if (security) { %> -->
+    <!-- security placeholder -->
     <h1>Add Athlete</h1>
     <!-- Form for adding a user -->
     <form action="/addAthlete" method="POST">
@@ -142,11 +142,6 @@
     <!-- Returns to the maintenance page for volunteers -->
     <a href="/showAthlete" class="btn-back">Back to Athlete</a>
     <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
-    <!-- <% } else { %> -->
-        <!-- <p>Access Denied: Please Log In</p> -->
-        <!-- <form action="/login" method="GET"> -->
-            <!-- <button type="submit" class="btn btn-primary">Log In</button> -->
-        <!-- </form> -->
-    <!-- <% } %> -->
+    <!-- else statement security placeholder %> -->
 </body>
 </html>
