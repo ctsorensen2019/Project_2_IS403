@@ -353,12 +353,12 @@ app.get('/employees', (req, res) => {
 });
 
 // edit employee get
-app.get('/editEmployee/:EmployeeID', (req, res) => {
+app.get('/editEmployee/:employeeid', (req, res) => {
     const { employeeid } = req.params;
 
     // Fetch the employee data from the database
     knex('employees')
-        .where('EmployeeID', employeeid)
+        .where('employeeid', employeeid)
         .first() // We use first() to get a single result
         .then(employee => {
             if (employee) {
@@ -392,23 +392,23 @@ app.post('/editEmployee', (req, res) => {
 
     // Build an object with the fields to update
     const updateData = {
-        EmpFirstName: empfirstname,
-        EmpLastName: emplastname,
-        Address: address,
-        City: city,
-        State: state,
-        Zip: zip,
-        Username: username
+        empfirstname: empfirstname,
+        emplastname: emplastname,
+        address: address,
+        city: city,
+        state: state,
+        zip: zip,
+        username: username
     };
 
     // Include the password if provided (not blank)
     if (password) {
-        updateData.Password = password;  // Assuming password is hashed before saving in production
+        updateData.password = password;  // Assuming password is hashed before saving in production
     }
 
     // Update the employee data in the database
     knex('employees')
-        .where('EmployeeID', employeeid)
+        .where('employeeid', employeeid)
         .update(updateData)
         .then(() => {
             // Redirect to a page showing the updated employee details or a confirmation page
@@ -429,10 +429,10 @@ app.post('/editEmployee', (req, res) => {
 
 
 // delete employee
-app.post('/deleteEmployee/:EmployeeID', (req, res) => {
-    const id = req.params.EmployeeID;
+app.post('/deleteEmployee/:employeeid', (req, res) => {
+    const id = req.params.employeeid;
     knex('employees')
-        .where('id', id)
+        .where('employeeid', id)
         .del() // Deletes the record with the specified username
         .then(() => {
             res.redirect('/employees'); // Redirect to the user list after deletion
@@ -453,17 +453,17 @@ app.post('/addEmployee', (req, res) => {
   
     knex('employees')
       .insert({
-        EmpFirstName: empfirstname,
-        EmpLastName: emplastname,
-        Address: address,
-        City: city,
-        State: state,
-        Zip: zip,
-        Username: username,
-        Password: password
+        empfirstname: empfirstname,
+        emplastname: emplastname,
+        address: address,
+        city: city,
+        state: state,
+        zip: zip,
+        username: username,
+        password: password
       })
       .then(() => {
-        res.redirect('/showEmployees'); // Redirect to the employees list after adding
+        res.redirect('/employees'); // Redirect to the employees list after adding
       })
       .catch(error => {
         console.error('Error adding employee:', error);
