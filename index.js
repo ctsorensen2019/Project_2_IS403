@@ -253,7 +253,7 @@ app.post('/deleteAthlete/:id', (req, res) => {
 // school get route
 app.get('/schools', (req, res) => {
     // Fetch athlete data from the database
-    knex('School')
+    knex('school')
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
@@ -267,11 +267,11 @@ app.get('/schools', (req, res) => {
 });
 
 // edit school
-app.get('/editSchool/:SchoolID', async (req, res) => {
-    const id = req.params.SchoolID;
-    const school = await knex('School').where({SchoolID : id}).first()
+app.get('/editSchool/:schoolid', async (req, res) => {
+    const id = req.params.schoolid;
+    const school = await knex('school').where({schoolid : id}).first()
 
-    res.render('/editSchool' , {school})
+    res.render('editSchool' , {school})
 });
 
 app.post('/editSchool', (req, res) => {
@@ -282,13 +282,13 @@ app.post('/editSchool', (req, res) => {
 
     // Build an object with the fields to update
     const updateData = {
-        SchoolDescription: schooldescription,
+        schooldescription: schooldescription,
 
     };
 
     // Update the employee data in the database
-    knex('School')
-        .where('SchoolID', schoolid)
+    knex('school')
+        .where('schoolid', schoolid)
         .update(updateData)
         .then(() => {
             // Redirect to a page showing the updated employee details or a confirmation page
@@ -307,9 +307,9 @@ app.post('/editSchool', (req, res) => {
 
 
 // delete school
-app.post('/deleteSchool/:SchoolID', (req, res) => {
-    const id = req.params.SchoolID;
-    knex('School')
+app.post('/deleteSchool/:schoolid', (req, res) => {
+    const id = req.params.schoolid;
+    knex('school')
         .where('SchoolID', id)
         .del() // Deletes the record with the specified username
         .then(() => {
@@ -326,9 +326,9 @@ app.get('/addSchool', (req, res) => {
     res.render('addSchool')
 });
 
-app.post('/addSchool', (req, res) => {
+app.post('/addSchool', async (req, res) => {
     const schoolname = req.body.schooldescription
-    knex('School').insert({SchoolDescription : schoolname})
+   await knex('school').insert({schooldescription : schoolname})
     res.redirect('/schools')
 })
 
@@ -338,7 +338,7 @@ app.post('/addSchool', (req, res) => {
 // get route
 app.get('/employees', (req, res) => {
     // Fetch athlete data from the database
-    knex('Employees')
+    knex('employees')
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
@@ -356,7 +356,7 @@ app.get('/editEmployee/:EmployeeID', (req, res) => {
     const { employeeid } = req.params;
 
     // Fetch the employee data from the database
-    knex('Employees')
+    knex('employees')
         .where('EmployeeID', employeeid)
         .first() // We use first() to get a single result
         .then(employee => {
@@ -406,7 +406,7 @@ app.post('/editEmployee', (req, res) => {
     }
 
     // Update the employee data in the database
-    knex('Employees')
+    knex('employees')
         .where('EmployeeID', employeeid)
         .update(updateData)
         .then(() => {
@@ -430,7 +430,7 @@ app.post('/editEmployee', (req, res) => {
 // delete employee
 app.post('/deleteEmployee/:EmployeeID', (req, res) => {
     const id = req.params.EmployeeID;
-    knex('Employees')
+    knex('employees')
         .where('id', id)
         .del() // Deletes the record with the specified username
         .then(() => {
@@ -450,7 +450,7 @@ app.get('/addEmployee', (req, res) => {
 app.post('/addEmployee', (req, res) => {
     const { empfirstname, emplastname, address, city, state, zip, username, password } = req.body;
   
-    knex('Employees')
+    knex('employees')
       .insert({
         EmpFirstName: empfirstname,
         EmpLastName: emplastname,
