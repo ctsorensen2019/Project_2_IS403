@@ -109,6 +109,20 @@
             <label for="athlastname">Last Name</label>
             <input type="text" id="athlastname" name="athlastname" placeholder="Enter athlete's last name" required>
         </div>
+
+        <label for="schoolid">School:</label>
+        <select id="schoolid" name="schoolid" required>
+            <% schools.forEach(school => { %>
+                <option value="<%= school.schoolid %>"><%= school.SchoolDescription %></option>
+            <% }) %>
+        </select>
+
+        <label for="employeeid">Employee:</label>
+        <select id="employeeid" name="employeeid" required>
+            <% employees.forEach(employee => { %>
+                <option value="<%= employee.employeeid %>"><%= employee.empfirstname %> <%= employee.emplastname %></option>
+            <% }) %>
+    </select>
         
         <!-- Email input field, must be email -->
         <div>
