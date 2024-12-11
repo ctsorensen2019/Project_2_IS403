@@ -140,6 +140,10 @@
             <td><%= athlete.phonenumber %></td>
             <td><%= athlete.email %></td>
             <td>
+                  <!-- Edit button -->
+              <form action="/statsAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
+                <button type="submit" class="btn-warning">Stats</button>
+              </form>
               <!-- Edit button -->
               <form action="/editAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
                 <button type="submit" class="btn-warning">Edit</button>

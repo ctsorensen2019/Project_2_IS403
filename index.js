@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-
+let security = false;
 // Serve static files
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
@@ -59,7 +59,8 @@ app.post('/login', (req, res) => {
     const { username, password } = req.body;
     // Validate credentials (replace with your logic)
     if (username === 'user' && password === 'password') {
-        res.send('Login successful');
+        security = true;
+        res.render('showAthlete', {security});
     } else {
         res.render('login', { errorMessage: 'Invalid username or password' });
     }
@@ -485,10 +486,93 @@ app.post('/addEmployee', (req, res) => {
       });
   });
   
+// athlete stats get
+app.get('/statsAthlete/:athleteid', async (req, res)=> {
+    const id = req.params.athleteid
+
+    const football = await knex('athletestatistics')
+    .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
+    .join('sport', 'sport.sportid','=','athletestatistics.sportid')
+    .where({sportdescription : 'football', athleteid : id})
+    .select('*')
+
+    const footballheaders = football.length > 0 ? Object.keys(football[0]) : [];
+
+    const basketball = await knex('athletestatistics')
+    .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
+    .join('sport', 'sport.sportid','=','athletestatistics.sportid')
+    .where({sportdescription : 'basketball', athleteid : id})
+    .select('*')
+
+    const basketballheaders = basketball.length > 0 ? Object.keys(basketball[0]) : [];
+
+    res.render('statsAthlete', {football, footballheaders, basketball, basketballheaders, security})
+
+});
+
+// edit basketball stats
+// get
+app.get('/basketballStats/:athleteid', async (req, res) => {
+    const id = req.params.athleteid
+    const stats = await knex('athletestatistics')
+    .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
+    .join('sport', 'sport.sportid','=','athletestatistics.sportid')
+    .where({sportdescription : 'basketball', athleteid : id}).select('*')
+    res.render('basketballStats', {security, stats})
+});
+// post
 
 
 
+// edit football stats
+// get 
+app.get('/footballStats/:athleteid', async (req, res) => {
+    const id = req.params.athleteid
+    const stats = await knex('athletestatistics')
+    .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
+    .join('sport', 'sport.sportid','=','athletestatistics.sportid')
+    .where({sportdescription : 'football', athleteid : id})
+    res.render('basketballStats', {security, stats})
+});
 
+//post
+app.post('/basketballStats/:athleteid', async (req, res) => {
+    const athleteid = req.params.athleteid;
+    const statistics = req.body;  // Now, req.body will contain a flat structure with statistic_<statisticid>
+  
+    // Make sure there is at least one statistic to update
+    if (!statistics || Object.keys(statistics).length === 0) {
+      return res.status(400).send('No statistics provided.');
+    }
+  
+    try {
+      // Loop through all the statistic values in the request body
+      const updatePromises = Object.keys(statistics).map((key) => {
+        // Extract the statistic ID from the key
+        const statisticid = key.replace('statistic_', '');  // Extract statisticid from "statistic_<id>"
+  
+        // Get the value for that statistic
+        const statisticValue = statistics[key];
+  
+        // Update the statistic in the athletestatistics table
+        return knex('athletestatistics')
+          .where({ athleteid: athleteid, statisticid: statisticid })
+          .update({ statistic: statisticValue });
+      });
+  
+      // Wait for all updates to complete
+      await Promise.all(updatePromises);
+  
+      // Redirect to the athlete's basketball stats page
+      res.redirect(`/statsAthlete/${athleteid}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error updating basketball statistics.');
+    }
+  });
+  
+  
+  
 
 
 
