@@ -311,7 +311,7 @@ app.post('/editSchool', (req, res) => {
 app.post('/deleteSchool/:schoolid', (req, res) => {
     const id = req.params.schoolid;
     knex('school')
-        .where('SchoolID', id)
+        .where('schoolid', id)
         .del() // Deletes the record with the specified username
         .then(() => {
             res.redirect('/schools'); // Redirect to the user list after deletion
