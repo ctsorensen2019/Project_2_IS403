@@ -130,28 +130,26 @@
     </thead>
     <tbody>
       <% if (athlete && athlete.length > 0) { %>
-        <% athlete.forEach(athlete => { %>
+        <% athletes.forEach(athlete => { %>
           <tr>
-            <td><%= athlete.AthleteID %></td>
-            <td><%= athlete.AthFirstName %></td>
-            <td><%= athlete.AthLastName %></td>
-            <td><%= athlete.SportDescription %></td>
-            <td><%= athlete.SchoolDescription %></td>
-            <td><%= athlete.Statistic %></td>
-            <td><%= athlete.StatisticDescription %></td>
-            <td>
-                <!-- Edit button -->
-                <form action="/editAthlete/<%= school.AthleteID %>" method="GET" style="display:inline;">
-                  <button type="submit" class="btn btn-warning">Edit</button>
-                </form>
-                <!-- Delete button with confirmation -->
-                <form action="/deleteAthlete/<%= school.AthleteID %>" method="POST" style="display:inline;">
-                  <button type="submit" class="btn btn-warning"
-                    onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
-                </form>
+              <td><%= athlete.athleteid %></td>
+              <td><%= athlete.athfirstname %></td>
+              <td><%= athlete.athlastname %></td>
+              <td><%= athlete.schoolid %></td>
+              <td><%= athlete.employeeid %></td>
+              <td><%= athlete.phonenumber %></td>
+              <td><%= athlete.email %></td>
+              <td>
+                  <form action="/editAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
+                      <button type="submit" class="btn btn-warning">Edit</button>
+                  </form>
+                  <form action="/deleteAthlete/<%= athlete.athleteid %>" method="POST" style="display:inline;">
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
               </td>
           </tr>
-        <% }) %>
+      <% }) %>
+      
       <% } else { %>
         <!-- Message when no data is available -->
         <tr>

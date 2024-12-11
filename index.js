@@ -75,19 +75,17 @@ app.post('/login', (req, res) => {
 //////Athlete//////
 
 app.get('/showAthlete', (req, res) => {
-    // Fetch athlete data from the database
     knex('athlete')
-        .select('*') // Adjust fields if needed
-        .then((results) => {
-            // Pass the results directly as `athlete`
+        .select('athleteid', 'athfirstname', 'athlastname', 'schoolid', 'employeeid', 'phonenumber', 'email')
+        .then((athlete) => {
             res.render('showAthlete', { athlete: results, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
-            // Pass an empty array for `athlete` and include an error message
             res.render('showAthlete', { athlete: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
 
 
 // search athlete
@@ -112,7 +110,7 @@ app.get('/searchAthlete', (req, res) => {
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
-            res.render('showAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
+            res.render('showAthlete', { athlete: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
 
@@ -122,50 +120,52 @@ app.get('/searchAthlete', (req, res) => {
 
 
 //Gets the required info to be able to add Users
-app.get('/addAthlete', (req, res) => {
-    // Fetch schools and employees for the dropdowns
-    Promise.all([
-        knex('school').select('schoolid', 'schooldescription'),
-        knex('employees').select('employeeid', 'empfirstname', 'emplastname') // Lowercase table name
-    ])
-        .then(([schools, employees]) => {
-            res.render('addAthlete', { schools, employees });
-        })
-        .catch(error => {
-            console.error('Error fetching data for addAthlete:', error);
-            res.status(500).send('Internal Server Error');
-        });
-});
+    app.get('/addAthlete', (req, res) => {
+        Promise.all([
+            knex('school').select('schoolid', 'schooldescription'),
+            knex('employees').select('employeeid', 'empfirstname', 'emplastname')
+        ])
+            .then(([schools, employees]) => {
+                res.render('addAthlete', { schools, employees });
+            })
+            .catch(error => {
+                console.error('Error fetching data for addAthlete:', error);
+                res.status(500).send('Internal Server Error');
+            });
+    });
+
  // fetches the add user page
 
 
 //Shows the changes on the client side
-app.post('/addAthlete', (req, res) => {
-    const athfirstname = req.body.athfirstname || '';
-    const athlastname = req.body.athlastname || '';
-    const email = req.body.email || '';
-    const phonenumber = req.body.phonenumber || '';
-    const schoolid = req.body.schoolid; // Required field
-    const employeeid = req.body.employeeid; // Required field
+    app.post('/addAthlete', (req, res) => {
+        const { athfirstname, athlastname, email, phonenumber, schoolid, employeeid } = req.body;
 
-    // Insert the new athlete into the database
-    knex('Athlete')
-        .insert({
-            athfirstname: athfirstname.toUpperCase(),
-            athlastname: athlastname.toUpperCase(),
-            email: email.toUpperCase(),
-            phonenumber: phonenumber,
-            schoolid: schoolid,
-            employeeid: employeeid
-        })
-        .then(() => {
-            res.redirect('/showAthlete');
-        })
-        .catch(error => {
-            console.error('Error adding Athlete:', error);
-            res.status(500).send('Internal Server Error');
-        });
-});
+        // Validate foreign keys
+        Promise.all([
+            knex('school').where({ schoolid }).first(),
+            knex('employees').where({ employeeid }).first()
+        ])
+            .then(([school, employee]) => {
+                if (!school || !employee) {
+                    throw new Error('Invalid school ID or employee ID');
+                }
+                return knex('athlete').insert({
+                    athfirstname: athfirstname.toUpperCase(),
+                    athlastname: athlastname.toUpperCase(),
+                    email: email.toUpperCase(),
+                    phonenumber,
+                    schoolid,
+                    employeeid
+                });
+            })
+            .then(() => res.redirect('/showAthlete'))
+            .catch(error => {
+                console.error('Error adding athlete:', error);
+                res.status(500).send('Internal Server Error');
+            });
+    });
+
 
 
 
