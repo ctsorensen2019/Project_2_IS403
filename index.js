@@ -86,6 +86,21 @@ app.get('/showAthlete', (req, res) => {
         });
 });
 
+// search athlete
+app.get('/searchAthlete/:athlete_id', (req, res) => {
+    // Fetch athlete data from the database
+    const athleteid = req.params.athlete_id
+    knex('athlete')
+        .where({athleteid : athlete_id}) // Replace 'administration' with the correct table name for athletes
+        .select('*') // Adjust fields if needed
+        .then(athlete => {
+            res.render('showAthlete', { athlete, errorMessage: null });
+        })
+        .catch(error => {
+            console.error('Error fetching athletes:', error);
+            res.render('showAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
+        });
+});
 
 //Add//
 //Athlete//
@@ -203,6 +218,15 @@ knex('athlete')
     res.status(500).send('Internal Server Error');
   });
 });
+
+
+
+
+
+
+
+
+
 
 
 
