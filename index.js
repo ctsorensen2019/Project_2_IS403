@@ -77,14 +77,15 @@ app.post('/login', (req, res) => {
 app.get('/showAthlete', (req, res) => {
     knex('athlete')
         .select('athleteid', 'athfirstname', 'athlastname', 'schoolid', 'employeeid', 'phonenumber', 'email')
-        .then((athlete) => {
-            res.render('showAthlete', { athlete: results, errorMessage: null });
+        .then((results) => {
+            res.render('showAthlete', { athletes: results, errorMessage: null }); // Pass as "athletes"
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
-            res.render('showAthlete', { athlete: [], errorMessage: 'Error fetching athlete data.' });
+            res.render('showAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
 
 
 
