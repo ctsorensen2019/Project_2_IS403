@@ -257,16 +257,54 @@ app.get('/schools', (req, res) => {
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
-            res.render('showAthlete', { school: results, errorMessage: null });
+            res.render('schools', { school: results, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching schools:', error);
             // Pass an empty array for `athlete` and include an error message
-            res.render('showAthlete', { school: [], errorMessage: 'Error fetching school data.' });
+            res.render('schools', { school: [], errorMessage: 'Error fetching school data.' });
         });
 });
 
 // edit school
+app.get('/editSchool/:SchoolID', async (req, res) => {
+    const id = req.params.SchoolID;
+    const school = await knex('School').where({SchoolID : id}).first()
+
+    res.render('/editSchool' , {school})
+});
+
+app.post('/editSchool', (req, res) => {
+    const {
+        schoolid,
+        schooldescription,
+    } = req.body;
+
+    // Build an object with the fields to update
+    const updateData = {
+        SchoolDescription: schooldescription,
+
+    };
+
+    // Update the employee data in the database
+    knex('School')
+        .where('SchoolID', schoolid)
+        .update(updateData)
+        .then(() => {
+            // Redirect to a page showing the updated employee details or a confirmation page
+            res.redirect('/schools'); // Redirecting to a view where the employee info is shown
+        })
+        .catch(error => {
+            console.error('Error updating employee:', error);
+            res.render('editEmployee', { 
+                errorMessage: 'There was an error updating the employee data.' 
+            });
+        });
+});
+
+
+
+
 
 // delete school
 app.post('/deleteSchool/:SchoolID', (req, res) => {
@@ -304,16 +342,90 @@ app.get('/employees', (req, res) => {
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
-            res.render('showAthlete', { employee: results, errorMessage: null });
+            res.render('employees', { employee: results, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching employee:', error);
             // Pass an empty array for `athlete` and include an error message
-            res.render('showAthlete', { employee: [], errorMessage: 'Error fetching employee data.' });
+            res.render('employees', { employee: [], errorMessage: 'Error fetching employee data.' });
         });
 });
 
-// edit employee
+// edit employee get
+app.get('/editEmployee/:EmployeeID', (req, res) => {
+    const { employeeid } = req.params;
+
+    // Fetch the employee data from the database
+    knex('Employees')
+        .where('EmployeeID', employeeid)
+        .first() // We use first() to get a single result
+        .then(employee => {
+            if (employee) {
+                // Render the edit form with the employee data
+                res.render('editEmployee', { employee });
+            } else {
+                // If the employee is not found, show an error message
+                res.status(404).render('error', { message: 'Employee not found' });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching employee data:', error);
+            res.status(500).render('error', { message: 'Error fetching employee data' });
+        });
+});
+
+
+// edit employee post
+app.post('/editEmployee', (req, res) => {
+    const {
+        employeeid,
+        empfirstname,
+        emplastname,
+        address,
+        city,
+        state,
+        zip,
+        username,
+        password
+    } = req.body;
+
+    // Build an object with the fields to update
+    const updateData = {
+        EmpFirstName: empfirstname,
+        EmpLastName: emplastname,
+        Address: address,
+        City: city,
+        State: state,
+        Zip: zip,
+        Username: username
+    };
+
+    // Include the password if provided (not blank)
+    if (password) {
+        updateData.Password = password;  // Assuming password is hashed before saving in production
+    }
+
+    // Update the employee data in the database
+    knex('Employees')
+        .where('EmployeeID', employeeid)
+        .update(updateData)
+        .then(() => {
+            // Redirect to a page showing the updated employee details or a confirmation page
+            res.redirect('/employees'); // Redirecting to a view where the employee info is shown
+        })
+        .catch(error => {
+            console.error('Error updating employee:', error);
+            res.render('editEmployee', { 
+                errorMessage: 'There was an error updating the employee data.' 
+            });
+        });
+});
+
+
+
+
+
+
 
 // delete employee
 app.post('/deleteEmployee/:EmployeeID', (req, res) => {
@@ -331,7 +443,33 @@ app.post('/deleteEmployee/:EmployeeID', (req, res) => {
 });
 
 // add employee
+app.get('/addEmployee', (req, res) => {
+    res.render('addEmployee')
+});
 
+app.post('/addEmployee', (req, res) => {
+    const { empfirstname, emplastname, address, city, state, zip, username, password } = req.body;
+  
+    knex('Employees')
+      .insert({
+        EmpFirstName: empfirstname,
+        EmpLastName: emplastname,
+        Address: address,
+        City: city,
+        State: state,
+        Zip: zip,
+        Username: username,
+        Password: password
+      })
+      .then(() => {
+        res.redirect('/showEmployees'); // Redirect to the employees list after adding
+      })
+      .catch(error => {
+        console.error('Error adding employee:', error);
+        res.status(500).send('Error adding employee.');
+      });
+  });
+  
 
 
 
