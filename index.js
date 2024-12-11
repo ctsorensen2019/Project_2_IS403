@@ -75,16 +75,19 @@ app.post('/login', (req, res) => {
 
 app.get('/showAthlete', (req, res) => {
     // Fetch athlete data from the database
-    knex('Athlete') // Replace 'administration' with the correct table name for athletes
+    knex('Athlete')
         .select('*') // Adjust fields if needed
-        .then(athlete => {
-            res.render('showAthlete', { athlete, errorMessage: null });
+        .then((results) => {
+            // Pass the results directly as `athlete`
+            res.render('showAthlete', { athlete: results, errorMessage: null });
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Error fetching athletes:', error);
-            res.render('showAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
+            // Pass an empty array for `athlete` and include an error message
+            res.render('showAthlete', { athlete: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
 
 // search athlete
 app.get('/searchAthlete', (req, res) => {
