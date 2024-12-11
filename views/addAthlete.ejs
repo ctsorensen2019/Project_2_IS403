@@ -109,30 +109,17 @@
             <label for="athlastname">Last Name</label>
             <input type="text" id="athlastname" name="athlastname" placeholder="Enter athlete's last name" required>
         </div>
-
-        <!-- Sport description input field-->
-        <div>
-            <label for="sportdescription">Name of Sport</label>
-            <input type="text" id="sportdescription" name="sportdescription" placeholder="Enter the type of sport" required>
-        </div>
-
-        <!-- School description input field -->
-        <div>
-            <label for="schooldescription">School Name</label>
-            <input type="text" id="schooldescription" name="schooldescription" placeholder="Enter the name of the athlete's school" required>
-        </div>
-
-        <!-- Statistic input field -->
-        <div>
-            <label for="statistic">Statistic</label>
-            <input type="float" id="statistic" name="statistic" placeholder="Enter the number for the statistic" required>
-        </div>
-          
         
-        <!-- Statistic description input field, must be text -->
+        <!-- Email input field, must be email -->
         <div>
-            <label for="statisticdescription">Statistic Type</label>
-            <input type="text" id="statisticdescription" name="statisticdescription" placeholder="Describe the statistic">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter the athlete's email">
+        </div>
+
+        <!-- Phone number input field, only allows numbers from 0-9 and it must have ten digits-->
+        <div>
+            <label for="phonenumber">Phone Number</label>
+            <input type="tel" id="phonenumber" name="phonenumber" placeholder="Enter phone number" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number" required>
         </div>
 
         <!-- Submit Button -->
