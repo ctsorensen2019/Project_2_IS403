@@ -94,94 +94,59 @@
 <body>
     <!-- Only the user logged in with admin access can view this page-->
     <!-- <% if (security) { %> -->
-    <h1>Add Volunteer</h1>
+    <h1>Add Athlete</h1>
     <!-- Form for adding a user -->
-    <form action="/addVolunteer" method="POST">
+    <form action="/addAthlete" method="POST">
 
         <!-- First name text input field -->
         <div>
-            <label for="first_name">First Name</label>
-            <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
+            <label for="athfirstname">First Name</label>
+            <input type="text" id="athfirstname" name="athfirstname" placeholder="Enter athlete's first name" required>
         </div>
 
         <!-- Last name text input field -->
         <div>
-            <label for="last_name">Last Name</label>
-            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
+            <label for="athlastname">Last Name</label>
+            <input type="text" id="athlastname" name="athlastname" placeholder="Enter athlete's last name" required>
         </div>
 
-        <!-- Phone number input field, only allows numbers from 0-9 and it must have ten digits-->
+        <!-- Sport description input field-->
         <div>
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="Enter phone number" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number" required>
+            <label for="sportdescription">Name of Sport</label>
+            <input type="text" id="sportdescription" name="sportdescription" placeholder="Enter the type of sport" required>
         </div>
 
-        <!-- Email input field, must be a valid email address -->
+        <!-- School description input field -->
         <div>
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter email address" required>
+            <label for="schooldescription">School Name</label>
+            <input type="text" id="schooldescription" name="schooldescription" placeholder="Enter the name of the athlete's school" required>
         </div>
 
-        <!-- Radio group for sewing level that is a dropdown that only allows for 3 selections so as to not mess up the database -->
-        <div class="form-group">
-            <label for="sewing_level"><strong>Sewing Level</strong></label>
-            <select id="sewing_level" name="sewing_level" class="form-control" required>
-              <option value="" disabled selected>Select your sewing level</option>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
-            </select>
-          </div>
+        <!-- Statistic input field -->
+        <div>
+            <label for="statistic">Statistic</label>
+            <input type="float" id="statistic" name="statistic" placeholder="Enter the number for the statistic" required>
+        </div>
           
         
-        <!-- Estimated Hours input field, must be a number -->
+        <!-- Statistic description input field, must be text -->
         <div>
-            <label for="esthour">Monthly Estimated Hours Available</label>
-            <input type="number" id="esthour" name="esthour" placeholder="Enter estimated hours available">
-        </div>
-
-        <!-- How discovered input field. Is a dropdown -->
-        <div class="form-group">
-            <label for="how-found"><strong>How did you discover us?</strong></label>
-            <select id="how-found" name="how_found" required>
-              <option value="" disabled selected>Select an option</option>
-              <option value="Social Media">Social Media</option>
-              <option value="Friend/Family">Friend/Family</option>
-              <option value="Email">Email</option>
-              <option value="JustServe">JustServe</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          
-        <!-- Number input field for zip code that only allows the 5 digit format of a zip code  -->
-        <div>
-            <label for="zipcode">ZIP Code</label>
-            <input type="number" id="zipcode" name="zipcode" placeholder="Enter ZIP code" pattern="[0-9]{5}" title="Enter a valid 5-digit ZIP code" required>
-        </div>
-
-        <!-- Username Dropdown. Only shows available usernames that are not already attached to a user. Allows the user to not select a username -->
-        <div class="form-group">
-            <label for="username"><strong>Username</strong></label>
-            <select id="username" name="username">
-                <option value="">-- Select a Username --</option>
-                <% availableUsernames.forEach(user => { %>
-                    <option value="<%= user.username %>"><%= user.username %></option>
-                <% }) %>
-            </select>
+            <label for="statisticdescription">Statistic Type</label>
+            <input type="text" id="statisticdescription" name="statisticdescription" placeholder="Describe the statistic">
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">Add Volunteer</button>
+        <button type="submit" class="btn btn-primary btn-block">Add Athlete</button>
     </form>
 
     <!-- Returns to the maintenance page for volunteers -->
-    <a href="/volunteerMaint" class="btn-back">Back to Volunteer Maintenance</a>
+    <a href="/showAthlete" class="btn-back">Back to Athlete</a>
     <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
-    <% } else { %>
-        <p>Access Denied: Please Log In</p>
-        <form action="/login" method="GET">
-            <button type="submit" class="btn btn-primary">Log In</button>
-        </form>
-    <% } %>
+    <!-- <% } else { %> -->
+        <!-- <p>Access Denied: Please Log In</p> -->
+        <!-- <form action="/login" method="GET"> -->
+            <!-- <button type="submit" class="btn btn-primary">Log In</button> -->
+        <!-- </form> -->
+    <!-- <% } %> -->
 </body>
 </html>
