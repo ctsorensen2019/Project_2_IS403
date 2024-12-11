@@ -21,8 +21,8 @@ const knex = require("knex")({
         database: process.env.RDS_DB_NAME || "ebdb",
         port: process.env.RDS_PORT || 5432,
         // Uncomment the below code when connecting to RDS
-        ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
-        //ssl: { rejectUnauthorized: false }
+        // ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
+        ssl: { rejectUnauthorized: false }
     }
 });
 
@@ -75,7 +75,7 @@ app.post('/login', (req, res) => {
 
 app.get('/showAthlete', (req, res) => {
     // Fetch athlete data from the database
-    knex('athlete') // Replace 'administration' with the correct table name for athletes
+    knex('Athlete') // Replace 'administration' with the correct table name for athletes
         .select('*') // Adjust fields if needed
         .then(athlete => {
             res.render('showAthlete', { athlete, errorMessage: null });
@@ -90,7 +90,7 @@ app.get('/showAthlete', (req, res) => {
 app.get('/searchAthlete', (req, res) => {
     const { first_name, last_name, sport } = req.query; // Fetch data from query parameters
 
-    knex('athlete')
+    knex('Athlete')
         .modify((queryBuilder) => {
             if (first_name) {
                 queryBuilder.where('first_name', 'like', `%${first_name}%`);
@@ -103,8 +103,8 @@ app.get('/searchAthlete', (req, res) => {
             }
         })
         .select('*') // Adjust fields if necessary
-        .then((athletes) => {
-            res.render('showAthlete', { athletes, errorMessage: null });
+        .then((athlete) => {
+            res.render('showAthlete', { athlete, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
