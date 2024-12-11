@@ -4,40 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Athlete Database</title>
+
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    
+
+<style>
+    /* General body styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    /* Page title styling */
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    /* Table styling */
+    table {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    th,
+    td {
+      padding: 15px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #c4c4c4;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    td {
+      font-size: 16px;
+    }
+
+    /* Form styling */
+    form {
+      margin: 20px 0;
+    }
+
+    input,
+    button {
+      font-size: 16px;
+      padding: 10px 15px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #293079;
+      color: #fff;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #0d0f27;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Athlete Database</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Athlete ID</th>
-                <th>Athlete First Name</th>
-                <th>Athlete Last Name</th>
-                <th>Athlete Sport</th>
-                <th>Athlete School</th>
-                <th>Athlete Statistic</th>
-                <th>Athlete Statistic Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% athlete.forEach(athlete => { %>
-                <tr>
-                    <td><%= athlete.id %></td>
-                    <td><%= athlete.athfirstname %></td>
-                    <td><%= athlete.athlastname %></td>
-                    <td><%= sport.sportdescription %></td>
-                    <td><%= school.schooldescription %></td>
-                    <td><%= statistics.statistic %></td>
-                    <td><%= statistics.statisticdescription %></td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
-    <br>
-    <form action="/showAthlete" method="POST">
-        <label for="athlete_id">Enter Athlete ID:</label>
-        <input type="number" name="athlete_id" required>
-        <button type="submit">Show Athlete</button>
+  <h1>Athlete Database</h1>
+  <div id="athlete_search">
+    <!-- Search form -->
+  <form action="/showAthlete" method="POST">
+    <label for="athlete_id">Enter Athlete ID:</label>
+    <input type="number" id="athlete_id" name="athlete_id" required>
+    <button type="submit">Search</button>
+  </form>
+</div>
+<div id="athlete_form">
+  <!-- Table of athlete -->
+  <table>
+    <thead>
+      <tr>
+        <th>Athlete ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Sport</th>
+        <th>School</th>
+        <th>Statistic</th>
+        <th>Statistic Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (athlete && athlete.length > 0) { %>
+        <% athlete.forEach(athlete => { %>
+          <tr>
+            <td><%= athlete.AthleteID %></td>
+            <td><%= athlete.AthFirstName %></td>
+            <td><%= athlete.AthLastName %></td>
+            <td><%= athlete.SportDescription %></td>
+            <td><%= athlete.SchoolDescription %></td>
+            <td><%= athlete.Statistic %></td>
+            <td><%= athlete.StatisticDescription %></td>
+            <td>
+                <!-- Edit button -->
+                <form action="/editAthlete/<%= row.username %>" method="GET" style="display:inline;">
+                  <button type="submit" class="btn btn-warning">Edit</button>
+                </form>
+                <!-- Delete button with confirmation -->
+                <form action="/deleteAthlete/<%= row.username %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn btn-warning"
+                    onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
+                </form>
+              </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <!-- Message when no data is available -->
+        <tr>
+          <td colspan="7">No data available</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
+    <!-- Add Athlete Button -->
+    <form action="/addAthlete" method="GET">
+        <button type="submit">Add Athlete</button>
     </form>
+
+    <!-- Add User Button -->
+    <form action="/" method="GET">
+        <button type="submit">Return to Home Page</button>
+    </form>
+</div>
+</div>
+  
 </body>
+
 </html>
