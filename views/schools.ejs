@@ -118,34 +118,24 @@
   <table>
     <thead>
       <tr>
-        <th>Athlete ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Sport</th>
-        <th>School</th>
-        <th>Statistic</th>
-        <th>Statistic Description</th>
+        <th>School ID</th>
+        <th>School Name</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% if (athlete && athlete.length > 0) { %>
-        <% athlete.forEach(athlete => { %>
+      <% if (school && school.length > 0) { %>
+        <% school.forEach(school => { %>
           <tr>
-            <td><%= athlete.AthleteID %></td>
-            <td><%= athlete.AthFirstName %></td>
-            <td><%= athlete.AthLastName %></td>
-            <td><%= athlete.SportDescription %></td>
-            <td><%= athlete.SchoolDescription %></td>
-            <td><%= athlete.Statistic %></td>
-            <td><%= athlete.StatisticDescription %></td>
+            <td><%= school.SchoolID %></td>
+            <td><%= school.SchoolDescription %></td>
             <td>
                 <!-- Edit button -->
-                <form action="/editAthlete/<%= school.AthleteID %>" method="GET" style="display:inline;">
+                <form action="/editSchool/<%= school.SchoolID %>" method="GET" style="display:inline;">
                   <button type="submit" class="btn btn-warning">Edit</button>
                 </form>
                 <!-- Delete button with confirmation -->
-                <form action="/deleteAthlete/<%= school.AthleteID %>" method="POST" style="display:inline;">
+                <form action="/deleteSchool/<%= school.SchoolID %>" method="POST" style="display:inline;">
                   <button type="submit" class="btn btn-warning"
                     onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
                 </form>
@@ -162,12 +152,12 @@
   </table>
   <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
     <!-- Add Athlete Button -->
-    <form action="/addAthlete" method="GET">
-        <button type="submit">Add Athlete</button>
+    <form action="/addSchool" method="GET">
+        <button type="submit">Add School</button>
     </form>
         <!-- Add Athlete Button -->
-        <form action="/schools" method="GET">
-          <button type="submit">Schools</button>
+        <form action="/showAthlete" method="GET">
+          <button type="submit">Athletes</button>
       </form>
     <!-- Add Athlete Button -->
     <form action="/employees" method="GET">

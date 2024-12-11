@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Athlete</title>
+    <!--Import the stylesheets from the styling folder-->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* Sets the background color for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sets styling for the title */
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        /* Styling for the form */
+        form {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #F9F9F9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sets styling for the titles of each input field */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /*Sets styling for the rest of the form */
+        input, select, button, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Sets styling for the submit button */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Allows for changing of the color of the submit button on hovering over it */
+        button:hover {
+            background-color: #45A049;
+        }
+
+        /* puts margin after the end of the radio group */
+        .radio-group {
+            margin-bottom: 15px;
+        }
+
+        /* Puts margin next to the radio group selection so the buttons are not directly next to them */
+        .radio-group label {
+            margin-right: 15px;
+        }
+
+        /*CSS for the return to home */
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /*Hover CSS for the return button */
+        .btn-back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Only the user logged in with admin access can view this page-->
+    <!-- security placeholder -->
+    <h1>Add School</h1>
+    <!-- Form for adding a user -->
+    <form action="/addSchool" method="POST">
+
+        <!-- First name text input field -->
+        <div>
+            <label for="athfirstname">School Name</label>
+            <input type="text" id="schooldescription" name="schooldescription" placeholder="Enter the school name:" required>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">Add School</button>
+    </form>
+
+    <!-- Returns to the maintenance page for volunteers -->
+    <a href="/schools" class="btn-back">Back to Schools</a>
+    <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
+    <!-- else statement security placeholder %> -->
+</body>
+</html>

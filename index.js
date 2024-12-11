@@ -236,8 +236,89 @@ app.post('/deleteAthlete/:id', (req, res) => {
 });
 
 
+//// Schools
+
+// school get route
+app.get('/schools', (req, res) => {
+    // Fetch athlete data from the database
+    knex('School')
+        .select('*') // Adjust fields if needed
+        .then((results) => {
+            // Pass the results directly as `athlete`
+            res.render('showAthlete', { school: results, errorMessage: null });
+        })
+        .catch((error) => {
+            console.error('Error fetching schools:', error);
+            // Pass an empty array for `athlete` and include an error message
+            res.render('showAthlete', { school: [], errorMessage: 'Error fetching school data.' });
+        });
+});
+
+// edit school
+
+// delete school
+app.post('/deleteSchool/:SchoolID', (req, res) => {
+    const id = req.params.SchoolID;
+    knex('School')
+        .where('SchoolID', id)
+        .del() // Deletes the record with the specified username
+        .then(() => {
+            res.redirect('/schools'); // Redirect to the user list after deletion
+        })
+        .catch(error => {
+            console.error('Error deleting school:', error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+// add school
+app.get('/addSchool', (req, res) => {
+    res.render('addSchool')
+});
+
+app.post('/addSchool', (req, res) => {
+    const schoolname = req.body.schooldescription
+    knex('School').insert({SchoolDescription : schoolname})
+    res.redirect('/schools')
+})
 
 
+
+/// employees
+// get route
+app.get('/employees', (req, res) => {
+    // Fetch athlete data from the database
+    knex('Employees')
+        .select('*') // Adjust fields if needed
+        .then((results) => {
+            // Pass the results directly as `athlete`
+            res.render('showAthlete', { employee: results, errorMessage: null });
+        })
+        .catch((error) => {
+            console.error('Error fetching employee:', error);
+            // Pass an empty array for `athlete` and include an error message
+            res.render('showAthlete', { employee: [], errorMessage: 'Error fetching employee data.' });
+        });
+});
+
+// edit employee
+
+// delete employee
+app.post('/deleteEmployee/:EmployeeID', (req, res) => {
+    const id = req.params.EmployeeID;
+    knex('Employees')
+        .where('id', id)
+        .del() // Deletes the record with the specified username
+        .then(() => {
+            res.redirect('/employees'); // Redirect to the user list after deletion
+        })
+        .catch(error => {
+            console.error('Error deleting employee:', error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+// add employee
 
 
 

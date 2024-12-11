@@ -117,35 +117,36 @@
   <!-- Table of athlete -->
   <table>
     <thead>
-      <tr>
-        <th>Athlete ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Sport</th>
-        <th>School</th>
-        <th>Statistic</th>
-        <th>Statistic Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if (athlete && athlete.length > 0) { %>
-        <% athlete.forEach(athlete => { %>
-          <tr>
-            <td><%= athlete.AthleteID %></td>
-            <td><%= athlete.AthFirstName %></td>
-            <td><%= athlete.AthLastName %></td>
-            <td><%= athlete.SportDescription %></td>
-            <td><%= athlete.SchoolDescription %></td>
-            <td><%= athlete.Statistic %></td>
-            <td><%= athlete.StatisticDescription %></td>
+        <tr>
+          <th>Employee ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Zip</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (employee && employee.length > 0) { %>
+          <% employee.forEach(emp => { %>
+            <tr>
+              <td><%= emp.EmployeeID %></td>
+              <td><%= emp.EmpFirstName %></td>
+              <td><%= emp.EmpLastName %></td>
+              <td><%= emp.Address %></td>
+              <td><%= emp.City %></td>
+              <td><%= emp.State %></td>
+              <td><%= emp.Zip %></td>
+              <td><%= emp.Username %></td>
             <td>
                 <!-- Edit button -->
-                <form action="/editAthlete/<%= school.AthleteID %>" method="GET" style="display:inline;">
+                <form action="/editEmployee/<%= emp.EmployeeID %>" method="GET" style="display:inline;">
                   <button type="submit" class="btn btn-warning">Edit</button>
                 </form>
                 <!-- Delete button with confirmation -->
-                <form action="/deleteAthlete/<%= school.AthleteID %>" method="POST" style="display:inline;">
+                <form action="/deleteEmployee/<%= emp.EmployeeID %>" method="POST" style="display:inline;">
                   <button type="submit" class="btn btn-warning"
                     onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
                 </form>
@@ -162,16 +163,16 @@
   </table>
   <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
     <!-- Add Athlete Button -->
-    <form action="/addAthlete" method="GET">
-        <button type="submit">Add Athlete</button>
+    <form action="/addEmployee" method="GET">
+        <button type="submit">Add Employee</button>
     </form>
         <!-- Add Athlete Button -->
         <form action="/schools" method="GET">
           <button type="submit">Schools</button>
       </form>
     <!-- Add Athlete Button -->
-    <form action="/employees" method="GET">
-      <button type="submit">Employees</button>
+    <form action="/showAthletes" method="GET">
+      <button type="submit">Athletes</button>
   </form>
     <!-- Add User Button -->
     <form action="/" method="GET">
