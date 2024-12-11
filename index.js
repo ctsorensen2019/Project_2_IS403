@@ -21,7 +21,7 @@ const knex = require("knex")({
         database: process.env.RDS_DB_NAME || "project 2",
         port: process.env.RDS_PORT|| 5432, 
         // Uncomment the below code when connecting to RDS
-        //ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
+        ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false
         //ssl: { rejectUnauthorized: false }
     }
   });
