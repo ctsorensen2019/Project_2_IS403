@@ -21,20 +21,20 @@
 :root { 
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #151515; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #ffc451; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --heading-color: #00004E; /* Color for headings, subheadings and title throughout the website */
+  --accent-color: #ff6900; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #312f2f; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: rgba(255, 255, 255, 0.905);  /* The default color of the main navmenu links */
-  --nav-hover-color: #ffc451; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-color: #ff6900;  /* The default color of the main navmenu links */
+  --nav-hover-color: #ffffff; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #ffc451; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-dropdown-color: #00004e; /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #ff6900; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -45,11 +45,11 @@
 }
 
 .dark-background {
-  --background-color: #060606;
+  --background-color: #00004e;
   --default-color: #ffffff;
   --heading-color: #ffffff;
-  --surface-color: #252525;
-  --contrast-color: #2a2727;
+  --surface-color: #00004e;
+  --contrast-color: #00004e;
 }
 
 /* Smooth scroll */
@@ -87,11 +87,29 @@ h6 {
   font-family: var(--heading-font);
 }
 
+.hover-text {
+  position: absolute;
+  bottom: 10px; /* Adjust as needed to position the text */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  color: #00004e;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-container:hover .hover-text {
+  opacity: 1; /* Make the text visible on hover */
+}
 /* PHP Email Form Messages
 ------------------------------*/
 .php-email-form .error-message {
   display: none;
-  background: #df1529;
+  background: #00004e;
   color: #ffffff;
   text-align: left;
   padding: 15px;
@@ -102,7 +120,7 @@ h6 {
 .php-email-form .sent-message {
   display: none;
   color: #ffffff;
-  background: #059652;
+  background: #ff6900;
   text-align: center;
   padding: 15px;
   margin-bottom: 24px;
@@ -158,7 +176,7 @@ h6 {
 }
 
 .header .logo img {
-  max-height: 36px;
+  max-height: 60px;
   margin-right: 8px;
 }
 
@@ -176,13 +194,14 @@ h6 {
 
 .header .btn-getstarted,
 .header .btn-getstarted:focus {
-  color: var(--contrast-color);
+  color: var(--accent-color);
   font-size: 14px;
   padding: 8px 30px;
   margin: 0 0 0 30px;
   border-radius: 4px;
   transition: 0.3s;
-  border: 2px solid var(--accent-color);
+  border: 2px solid var(--heading-color);
+  
 }
 
 .header .btn-getstarted:hover,
@@ -208,7 +227,7 @@ h6 {
 }
 
 .scrolled .header {
-  box-shadow: 0px 0 18px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0 18px #ff6900;
 }
 
 /* Index Page Header
@@ -220,7 +239,7 @@ h6 {
 /* Index Page Header on Scroll
 ------------------------------*/
 .index-page.scrolled .header {
-  --background-color: rgba(0, 0, 0, 0.8);
+  --background-color: #ffffff;
 }
 
 /*--------------------------------------------------------------
@@ -854,7 +873,7 @@ section,
   padding: 30px 20px;
   transition: ease-in-out 0.3s;
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
-  height: 100%;
+  height: 80%;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -939,7 +958,7 @@ section,
 .clients .swiper-slide img {
   opacity: 0.5;
   transition: 0.3s;
-  filter: grayscale(100);
+  /* filter: grayscale(100); */
 }
 
 .clients .swiper-slide img:hover {
@@ -965,6 +984,25 @@ section,
 
 .clients .swiper-pagination .swiper-pagination-bullet-active {
   background-color: var(--accent-color);
+}
+
+.clients .hover-text {
+  position: absolute;
+  bottom: 10px; /* Adjust as needed to position the text */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff; /* Semi-transparent background */
+  color: #00004e;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.clients .swiper-slide:hover .hover-text {
+  opacity: 1; /* Make the text visible on hover */
 }
 
 /*--------------------------------------------------------------
