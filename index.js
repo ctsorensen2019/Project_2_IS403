@@ -280,14 +280,11 @@ app.post('/addAthlete', (req, res) => {
 
 //configures the edit user functionality
 app.get('/editAthlete/:athleteid', (req, res) => {
-    const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
-    const athlastname = req.body.athlastname || '';
-    const sportdescription = req.body.sportdescription || '';
-    const schooldescription = req.body.schooldescription || '';
-    const statistic = parseFloat(req.body.statistic) || 0.0;
-    const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
-    knex('athlete')
-        .where('athleteid', athleteid)
+    const id = req.params.athleteid; // Default to empty string if not provided
+        knex('athlete')
+        .join('school', 'athlete.schoolid', '=', 'school.schoolid')  // Correct table name 'school'
+        .join('employees', 'athlete.employeeid', '=', 'employees.employeeid')  // Join with employees table
+        .where({athleteid : id})
         .first()
         .then(athlete => {
             if (!athlete) {
