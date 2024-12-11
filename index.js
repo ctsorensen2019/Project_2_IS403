@@ -92,15 +92,21 @@ app.post('/login', (req, res) => {
 
 app.get('/showAthlete', (req, res) => {
     knex('athlete')
-        .select('athleteid', 'athfirstname', 'athlastname', 'schoolid', 'employeeid', 'phonenumber', 'email')
+        .join('school', 'athlete.schoolid', '=', 'school.schoolid')  // Correct table name 'school'
+        .join('employees', 'athlete.employeeid', '=', 'employees.employeeid')  // Join with employees table
+        .select('athlete.athleteid', 'athlete.athfirstname', 'athlete.athlastname', 
+                'athlete.phonenumber', 'athlete.email', 'school.schooldescription', 
+                'employees.empfirstname', 'employees.emplastname') // Adjust fields as needed
         .then((results) => {
-            res.render('showAthlete', { athletes: results, errorMessage: null }); // Pass as "athletes"
+            res.render('showAthlete', { athletes: results, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
             res.render('showAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
+
 
 
 
@@ -114,6 +120,8 @@ app.get('/searchAthlete', (req, res) => {
     const lastNameUpper = last_name ? last_name.toUpperCase() : '';
 
     knex('athlete')
+        .join('school', 'athlete.schoolid', '=', 'school.schoolid')  // Inner join with schools table
+        .join('employees', 'athlete.employeeid', '=', 'employees.employeeid')  // Inner join with employees table
         .modify((queryBuilder) => {
             if (firstNameUpper) {
                 queryBuilder.where('athfirstname', 'like', `%${firstNameUpper}%`);
@@ -122,7 +130,7 @@ app.get('/searchAthlete', (req, res) => {
                 queryBuilder.where('athlastname', 'like', `%${lastNameUpper}%`);
             }
         })
-        .select('*') // Adjust fields if necessary
+        .select('athlete.*', 'schools.schooldescription', 'employees.empfirstname', 'employees.emplastname') // Adjust fields if necessary
         .then((athletes) => {
             res.render('searchAthlete', { athletes, first_name, last_name, security, errorMessage: null });
         })
@@ -131,6 +139,7 @@ app.get('/searchAthlete', (req, res) => {
             res.render('searchAthlete', { athletes: [], errorMessage: 'Error fetching athlete data.' });
         });
 });
+
 
 
 
@@ -659,7 +668,7 @@ app.get('/footballStats/:athleteid', async (req, res) => {
     .join('statistics', 'statistics.statisticid','=','athletestatistics.statisticid')
     .join('sport', 'sport.sportid','=','athletestatistics.sportid')
     .where({sportdescription : 'football', athleteid : id})
-    res.render('basketballStats', {security, stats})
+    res.render('footballStats', {security, stats})
 });
 
 //post

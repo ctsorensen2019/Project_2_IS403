@@ -105,7 +105,7 @@
 
             <tr>
                 <th>Statistic Description</th>
-
+                <th>Statistic</th>
             </tr>
    
     </thead>
@@ -160,7 +160,7 @@
       </tbody>
       
     </table>
-    <form action="/footballStats/<%= football.athleteid%>" method="GET">
+    <form action="/footballStats/<%= football[0].athleteid%>" method="GET">
         <button type="submit">Edit Football Stats</button>
     </form>
   <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">

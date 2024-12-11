@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <h1>Edit Basketball Stats</h1>
+    <h1>Edit Football Stats</h1>
     <form action="/footballStats/<%= stats[0].athleteid %>" method="POST">
         <% stats.forEach(stat => { %>
           <label for="<%= stat.statisticid %>"><%= stat.statisticdescription %></label>

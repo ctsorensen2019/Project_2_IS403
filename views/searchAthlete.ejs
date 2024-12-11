@@ -119,10 +119,10 @@
         <th>Athlete ID</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Sport</th>
+        <th>Phone Number</th>
+        <th>Email</th>
         <th>School</th>
-        <th>Statistic</th>
-        <th>Statistic Description</th>
+        <th>Assigned Employee</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -133,10 +133,10 @@
             <td><%= athlete.athleteid %></td>
             <td><%= athlete.athfirstname %></td>
             <td><%= athlete.athlastname %></td>
-            <td><%= athlete.schoolid %></td>
-            <td><%= athlete.employeeid %></td>
             <td><%= athlete.phonenumber %></td>
             <td><%= athlete.email %></td>
+            <td><%= athlete.schooldescription %></td>
+            <td><%= athlete.empfirstname + ' ' + athlete.emplastname %></td>
             <td>
                   <!-- Edit button -->
               <form action="/statsAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
