@@ -92,6 +92,7 @@
     </style>
 </head>
 <body>
+    <% if (security) {%>
     <!-- Only the user logged in with admin access can view this page-->
     <!-- security placeholder -->
     <h1>Add School</h1>
@@ -111,5 +112,10 @@
     <a href="/schools" class="btn-back">Back to Schools</a>
     <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
     <!-- else statement security placeholder %> -->
+    <%} else {%>
+        <h1>Unauthorized Access</h1>
+        <h2>Please Log In</h2>
+        <form action="/login" method="GET"><button type="submit">Log In</button></form>
+        <%}%>
 </body>
 </html>

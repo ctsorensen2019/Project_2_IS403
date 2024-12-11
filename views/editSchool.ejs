@@ -82,6 +82,7 @@
     </style>
 </head>
 <body>
+    <% if (security) {%>
     <h1>Edit School</h1>
     <form action="/editSchool" method="POST">
         <!-- Employee ID (hidden field for identifying the record) -->
@@ -94,5 +95,10 @@
         <!-- Submit Button -->
         <button type="submit">Save Changes</button>
     </form>
+    <%} else {%>
+        <h1>Unauthorized Access</h1>
+        <h2>Please Log In</h2>
+        <form action="/login" method="GET"><button type="submit">Log In</button></form>
+        <%}%>
 </body>
 </html>

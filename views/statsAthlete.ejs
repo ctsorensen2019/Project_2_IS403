@@ -96,6 +96,7 @@
 </head>
 
 <body>
+  <% if (security) {%>
   <h1>Athlete Stats</h1>
 <div id="athlete_form">
   <!-- Table for Basketball Stats -->
@@ -176,5 +177,9 @@
 </div>
   
 </body>
-
+<%} else {%>
+  <h1>Unauthorized Access</h1>
+  <h2>Please Log In</h2>
+  <form action="/login" method="GET"><button type="submit">Log In</button></form>
+  <%}%>
 </html>

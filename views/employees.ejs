@@ -96,6 +96,7 @@
 </head>
 
 <body>
+  <% if (security) {%>
   <h1>Employee Database</h1>
 
 <div id="athlete_form">
@@ -166,7 +167,11 @@
     </form>
 </div>
 </div>
-  
+<%} else {%>
+  <h1>Unauthorized Access</h1>
+  <h2>Please Log In</h2>
+  <form action="/login" method="GET"><button type="submit">Log In</button></form>
+  <%}%>
 </body>
 
 </html>

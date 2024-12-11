@@ -12,6 +12,7 @@
     </style>
 </head>
 <body>
+    <% if (security) {%>
     <h1>Edit Football Stats</h1>
     <form action="/footballStats/<%= stats[0].athleteid %>" method="POST">
         <% stats.forEach(stat => { %>
@@ -27,5 +28,10 @@
       
       
     </form>
+    <%} else {%>
+        <h1>Unauthorized Access</h1>
+        <h2>Please Log In</h2>
+        <form action="/login" method="GET"><button type="submit">Log In</button></form>
+        <%}%>
 </body>
 </html>

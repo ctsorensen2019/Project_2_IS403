@@ -98,7 +98,7 @@ app.get('/showAthlete', (req, res) => {
                 'athlete.phonenumber', 'athlete.email', 'school.schooldescription', 
                 'employees.empfirstname', 'employees.emplastname') // Adjust fields as needed
         .then((results) => {
-            res.render('showAthlete', { athletes: results, errorMessage: null });
+            res.render('showAthlete', { athletes: results, security, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching athletes:', error);
@@ -154,7 +154,7 @@ app.get('/searchAthlete', (req, res) => {
             knex('employees').select('employeeid', 'empfirstname', 'emplastname')
         ])
             .then(([schools, employees]) => {
-                res.render('addAthlete', { schools, employees });
+                res.render('addAthlete', { schools, employees, security });
             })
             .catch(error => {
                 console.error('Error fetching data for addAthlete:', error);
@@ -376,7 +376,7 @@ app.get('/schools', (req, res) => {
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
-            res.render('schools', { school: results, errorMessage: null });
+            res.render('schools', { school: results, security, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching schools:', error);
@@ -390,7 +390,7 @@ app.get('/editSchool/:schoolid', async (req, res) => {
     const id = req.params.schoolid;
     const school = await knex('school').where({schoolid : id}).first()
 
-    res.render('editSchool' , {school})
+    res.render('editSchool' , {school, security})
 });
 
 app.post('/editSchool', (req, res) => {
@@ -442,7 +442,7 @@ app.post('/deleteSchool/:schoolid', (req, res) => {
 
 // add school
 app.get('/addSchool', (req, res) => {
-    res.render('addSchool')
+    res.render('addSchool', {security})
 });
 
 app.post('/addSchool', async (req, res) => {
@@ -461,7 +461,7 @@ app.get('/employees', (req, res) => {
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
-            res.render('employees', { employee: results, errorMessage: null });
+            res.render('employees', { employee: results, security, errorMessage: null });
         })
         .catch((error) => {
             console.error('Error fetching employee:', error);
@@ -481,7 +481,7 @@ app.get('/editEmployee/:employeeid', (req, res) => {
         .then(employee => {
             if (employee) {
                 // Render the edit form with the employee data
-                res.render('editEmployee', { employee });
+                res.render('editEmployee', { employee, security });
             } else {
                 // If the employee is not found, show an error message
                 res.status(404).render('error', { message: 'Employee not found' });
@@ -563,7 +563,7 @@ app.post('/deleteEmployee/:employeeid', (req, res) => {
 
 // add employee
 app.get('/addEmployee', (req, res) => {
-    res.render('addEmployee')
+    res.render('addEmployee', {security})
 });
 
 app.post('/addEmployee', (req, res) => {
