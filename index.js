@@ -108,7 +108,9 @@ app.get('/searchAthlete/:athlete_id', (req, res) => {
 
 //Gets the required info to be able to add Users
 app.get('/addAthlete', (req, res) => {
-    res.render('addAthlete', {security})
+    res.render('addAthlete', 
+        //{security}
+    )
 }); // fetches the add user page
 
 
