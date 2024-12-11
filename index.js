@@ -8,6 +8,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // Set up the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.json());
 
 const port = process.env.PORT || 3500;
 
@@ -29,7 +30,7 @@ const knex = require("knex")({
 
 
 // Middleware to parse URL-encoded bodies
-//app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 
 
@@ -75,7 +76,7 @@ app.post('/login', (req, res) => {
 
 app.get('/showAthlete', (req, res) => {
     // Fetch athlete data from the database
-    knex('Athlete')
+    knex('athlete')
         .select('*') // Adjust fields if needed
         .then((results) => {
             // Pass the results directly as `athlete`
@@ -93,7 +94,7 @@ app.get('/showAthlete', (req, res) => {
 app.get('/searchAthlete', (req, res) => {
     const { first_name, last_name, sport } = req.query; // Fetch data from query parameters
 
-    knex('Athlete')
+    knex('athlete')
         .modify((queryBuilder) => {
             if (first_name) {
                 queryBuilder.where('first_name', 'like', `%${first_name}%`);
@@ -122,35 +123,50 @@ app.get('/searchAthlete', (req, res) => {
 
 //Gets the required info to be able to add Users
 app.get('/addAthlete', (req, res) => {
-    res.render('addAthlete',
-        //{security}
-    )
-}); // fetches the add user page
+    // Fetch schools and employees for the dropdowns
+    Promise.all([
+        knex('school').select('schoolid', 'schooldescription'),
+        knex('employees').select('employeeid', 'empfirstname', 'emplastname') // Lowercase table name
+    ])
+        .then(([schools, employees]) => {
+            res.render('addAthlete', { schools, employees });
+        })
+        .catch(error => {
+            console.error('Error fetching data for addAthlete:', error);
+            res.status(500).send('Internal Server Error');
+        });
+});
+ // fetches the add user page
 
 
 //Shows the changes on the client side
 app.post('/addAthlete', (req, res) => {
-    // Extract form values from req.body
-    const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
+    const athfirstname = req.body.athfirstname || '';
     const athlastname = req.body.athlastname || '';
     const email = req.body.email || '';
-    const phonenumber = req.body.phonenumber || ''; // Default to empty string if not provided
-    // Insert the new Characters into the database
-    knex('athlete')
+    const phonenumber = req.body.phonenumber || '';
+    const schoolid = req.body.schoolid; // Required field
+    const employeeid = req.body.employeeid; // Required field
+
+    // Insert the new athlete into the database
+    knex('Athlete')
         .insert({
             athfirstname: athfirstname.toUpperCase(),
             athlastname: athlastname.toUpperCase(),
             email: email.toUpperCase(),
-            phonenumber: phonenumber
+            phonenumber: phonenumber,
+            schoolid: schoolid,
+            employeeid: employeeid
         })
         .then(() => {
-            res.redirect('/showAthlete'); // Redirect to the user list page after adding
+            res.redirect('/showAthlete');
         })
         .catch(error => {
             console.error('Error adding Athlete:', error);
             res.status(500).send('Internal Server Error');
         });
 });
+
 
 
 //Edit//
