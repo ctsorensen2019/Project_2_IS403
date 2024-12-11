@@ -175,7 +175,7 @@ app.get('/searchAthlete', (req, res) => {
 
 
 //configures the edit user functionality
-app.get('/editAthlete/:id', (req, res) => {
+app.get('/editAthlete/:athleteid', (req, res) => {
     const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
     const athlastname = req.body.athlastname || '';
     const sportdescription = req.body.sportdescription || '';
@@ -183,11 +183,11 @@ app.get('/editAthlete/:id', (req, res) => {
     const statistic = parseFloat(req.body.statistic) || 0.0;
     const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
     knex('athlete')
-        .where('id', id)
+        .where('athleteid', athleteid)
         .first()
         .then(athlete => {
             if (!athlete) {
-                console.error(`No Athlete found with id: ${id}`);
+                console.error(`No Athlete found with id: ${athleteid}`);
                 return res.status(404).send('Athlete not found');
             }
             res.render('editAthlete', { athlete, security });
@@ -201,7 +201,7 @@ app.get('/editAthlete/:id', (req, res) => {
 
 
 //further configures the edit user, and allows for edits
-app.post('/editAthlete/:id', (req, res) => {
+app.post('/editAthlete/:athleteid', (req, res) => {
     const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
     const athlastname = req.body.athlastname || '';
     const sportdescription = req.body.sportdescription || '';
@@ -210,7 +210,7 @@ app.post('/editAthlete/:id', (req, res) => {
     const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
     // Update only the accesscontrol field for the given username
     knex('athlete')
-        .where('id', id) // Ensure you are updating the correct user
+        .where('athleteid', athleteid) // Ensure you are updating the correct user
         .update({
             athfirstname: athfirstname.toUpperCase(),
             athlastname: athlastname.toUpperCase(),
@@ -234,19 +234,33 @@ app.post('/editAthlete/:id', (req, res) => {
 
 
 //Allows for deletion
-app.post('/deleteAthlete/:id', (req, res) => {
-    const athleteid = req.params.id;
-    knex('athlete')
-        .where('id', id)
-        .del() // Deletes the record with the specified username
+app.post('/deleteAthlete/:athleteid', (req, res) => {
+    const athleteid = req.params.athleteid;
+
+    // Delete references in dependent tables
+    knex('athletestatistics')
+        .where('athleteid', athleteid)
+        .del()
         .then(() => {
-            res.redirect('/showAthlete'); // Redirect to the user list after deletion
+            return knex('offers')
+                .where('athleteid', athleteid)
+                .del();
+        })
+        .then(() => {
+            // Finally, delete the athlete
+            return knex('athlete')
+                .where('athleteid', athleteid)
+                .del();
+        })
+        .then(() => {
+            res.redirect('/showAthlete');
         })
         .catch(error => {
-            console.error('Error deleting Athlete:', error);
+            console.error('Error deleting athlete:', error);
             res.status(500).send('Internal Server Error');
         });
 });
+
 
 
 //// Schools
