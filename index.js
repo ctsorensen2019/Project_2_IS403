@@ -176,54 +176,50 @@ app.get('/searchAthlete', (req, res) => {
 
 //configures the edit user functionality
 app.get('/editAthlete/:athleteid', (req, res) => {
-    const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
-    const athlastname = req.body.athlastname || '';
-    const sportdescription = req.body.sportdescription || '';
-    const schooldescription = req.body.schooldescription || '';
-    const statistic = parseFloat(req.body.statistic) || 0.0;
-    const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
-    knex('athlete')
-        .where('athleteid', athleteid)
-        .first()
-        .then(athlete => {
-            if (!athlete) {
-                console.error(`No Athlete found with id: ${athleteid}`);
-                return res.status(404).send('Athlete not found');
-            }
-            res.render('editAthlete', { athlete, security });
-        })
-        .catch(error => {
-            console.error('Error fetching Athletes for editing:', error);
-            res.status(500).send('Internal Server Error');
-        });
+    const athleteid = req.params.athleteid;
+
+    Promise.all([
+        knex('athlete').where('athleteid', athleteid).first(), // Fetch the athlete
+        knex('school').select('schoolid', 'schooldescription'), // Fetch schools for dropdown
+        knex('employees').select('employeeid', 'empfirstname', 'emplastname') // Fetch employees for dropdown
+    ])
+    .then(([athlete, schools, employees]) => {
+        if (!athlete) {
+            console.error(`No Athlete found with id: ${athleteid}`);
+            return res.status(404).send('Athlete not found');
+        }
+        res.render('editAthlete', { athlete, schools, employees });
+    })
+    .catch(error => {
+        console.error('Error fetching athlete data for editing:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
+
 
 
 
 //further configures the edit user, and allows for edits
 app.post('/editAthlete/:athleteid', (req, res) => {
-    const athfirstname = req.body.athfirstname || ''; // Default to empty string if not provided
-    const athlastname = req.body.athlastname || '';
-    const sportdescription = req.body.sportdescription || '';
-    const schooldescription = req.body.schooldescription || '';
-    const statistic = parseFloat(req.body.statistic) || 0.0;
-    const statisticdescription = req.body.statisticdescription || ''; // Default to empty string if not provided
-    // Update only the accesscontrol field for the given username
+    const athleteid = req.params.athleteid;
+
+    const { athfirstname, athlastname, email, phonenumber, schoolid, employeeid } = req.body;
+
     knex('athlete')
-        .where('athleteid', athleteid) // Ensure you are updating the correct user
+        .where('athleteid', athleteid)
         .update({
             athfirstname: athfirstname.toUpperCase(),
             athlastname: athlastname.toUpperCase(),
-            sportdescription: sportdescription.toUpperCase(),
-            schooldescription: schooldescription.toUpperCase(),
-            statistic: statistic,
-            statisticdescription: statisticdescription.toUpperCase()
+            email: email ? email.toUpperCase() : null,
+            phonenumber: phonenumber || null,
+            schoolid: parseInt(schoolid),
+            employeeid: parseInt(employeeid)
         })
         .then(() => {
-            res.redirect('/showAthlete'); // Redirect after successful update
+            res.redirect('/showAthlete');
         })
         .catch(error => {
-            console.error('Error updating Athlete:', error);
+            console.error('Error updating athlete:', error);
             res.status(500).send('Internal Server Error');
         });
 });

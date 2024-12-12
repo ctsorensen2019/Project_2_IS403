@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Athlete</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* Sets the background color for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sets styling for the title */
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        /* Styling for the form */
+        form {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #F9F9F9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sets styling for the titles of each input field */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /*Sets styling for the rest of the form */
+        input, select, button, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Sets styling for the submit button */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Allows for changing of the color of the submit button on hovering over it */
+        button:hover {
+            background-color: #45A049;
+        }
+
+        /* puts margin after the end of the radio group */
+        .radio-group {
+            margin-bottom: 15px;
+        }
+
+        /* Puts margin next to the radio group selection so the buttons are not directly next to them */
+        .radio-group label {
+            margin-right: 15px;
+        }
+
+        /*CSS for the return to home */
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /*Hover CSS for the return button */
+        .btn-back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Edit Athlete</h1>
+    <form action="/editAthlete/<%= athlete.athleteid %>" method="POST">
+        <label for="athfirstname">First Name:</label>
+        <input type="text" id="athfirstname" name="athfirstname" value="<%= athlete.athfirstname %>" required>
+
+        <label for="athlastname">Last Name:</label>
+        <input type="text" id="athlastname" name="athlastname" value="<%= athlete.athlastname %>" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="<%= athlete.email %>">
+
+        <label for="phonenumber">Phone Number:</label>
+        <input type="text" id="phonenumber" name="phonenumber" value="<%= athlete.phonenumber %>">
+
+        <label for="schoolid">School:</label>
+        <select id="schoolid" name="schoolid" required>
+            <% schools.forEach(school => { %>
+                <option value="<%= school.schoolid %>" <%= athlete.schoolid === school.schoolid ? 'selected' : '' %>><%= school.schooldescription %></option>
+            <% }); %>
+        </select>
+
+        <label for="employeeid">Employee:</label>
+        <select id="employeeid" name="employeeid" required>
+            <% employees.forEach(employee => { %>
+                <option value="<%= employee.employeeid %>" <%= athlete.employeeid === employee.employeeid ? 'selected' : '' %>><%= employee.empfirstname %> <%= employee.emplastname %></option>
+            <% }); %>
+        </select>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>
