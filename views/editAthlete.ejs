@@ -83,7 +83,7 @@
 </head>
 <body>
     <% if (security) {%>
-    <h1>this shouldn't work i need to make it the school and employee dropdown prepopulate</h1>
+    <h1>Edit Athlete</h1>
     <form action="/editAthlete" method="POST">
         <!-- Employee ID (hidden field for identifying the record) -->
         <input type="hidden" id="athleteid" name="athleteid" value="<%= athlete.athleteid %>">
@@ -104,22 +104,26 @@
         <label for="city">Email</label>
         <input type="text" id="city" name="city" placeholder="Enter city" value="<%= athlete.email %>" required>
 
-        <label for="schoolid">Select School:</label>
-        <select name="schoolid" id="schoolid" required>
-            <% schools.forEach(school => { %>
-                <option value="<%= school.schoolid %>"><%= school.schooldescription %></option>
-            <% }); %>
-        </select>
+    <!-- Select School -->
+    <label for="schoolid">Select School:</label>
+    <select name="schoolid" id="schoolid" required>
+        <% schools.forEach(school => { %>
+            <option value="<%= school.schoolid %>" <%= athlete.schoolid === school.schoolid ? 'selected' : '' %>><%= school.schooldescription %></option>
+        <% }); %>
+    </select>
 
-        <label for="employeeid">Select Employee:</label>
-        <select name="employeeid" id="employeeid" required>
-            <% employees.forEach(employee => { %>
-                <option value="<%= employee.employeeid %>"><%= employee.empfirstname %> <%= employee.emplastname %></option>
-            <% }); %>
-        </select>
+    <!-- Select Employee -->
+    <label for="employeeid">Select Employee:</label>
+    <select name="employeeid" id="employeeid" required>
+        <% employees.forEach(employee => { %>
+            <option value="<%= employee.employeeid %>" <%= athlete.employeeid === employee.employeeid ? 'selected' : '' %>><%= employee.empfirstname %> <%= employee.emplastname %></option>
+        <% }); %>
+    </select>
+        
 
         <!-- Submit Button -->
         <button type="submit">Save Changes</button>
+
     </form>
     <%} else {%>
         <h1>Unauthorized Access</h1>
