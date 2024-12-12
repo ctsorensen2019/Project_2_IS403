@@ -31,7 +31,7 @@
       background-color: #f4f4f4;
       color: #333;
       text-align: center;
-      padding: 20px;
+      padding: 10px;
       margin: 0;
     }
 
@@ -43,8 +43,8 @@
 
     /* Table styling */
     table {
-      width: 90%;
-      max-width: 1200px;
+      width: 95%;
+      /* max-width: 1200px; */
       margin: 20px auto;
       border-collapse: collapse;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -53,7 +53,7 @@
 
     th,
     td {
-      padding: 15px;
+      padding: 2px;
       text-align: center;
       border: 1px solid #ddd;
     }
@@ -96,6 +96,7 @@
 </head>
 
 <body>
+  <% if (security) {%>
   <h1>Athlete Database</h1>
   <div id="athlete_search">
     <!-- Search form -->
@@ -105,9 +106,6 @@
       
       <label for="last_name">Athlete Last Name:</label>
       <input type="text" id="last_name" name="last_name">
-      
-      <label for="sport">Sport:</label>
-      <input type="text" id="sport" name="sport">
       
       <button type="submit">Search</button>
     </form>
@@ -121,10 +119,17 @@
         <th>Athlete ID</th>
         <th>First Name</th>
         <th>Last Name</th>
+<<<<<<< HEAD
         <th>School</th>
         <th>Sport</th>
         <th>Statistic</th>
         <th>Statistic Description</th>
+=======
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>School</th>
+        <th>Assigned Employee</th>
+>>>>>>> cc7f19a6aae3ddc5e853b00d5b7d78550a28a317
         <th>Actions</th>
       </tr>
     </thead>
@@ -135,11 +140,15 @@
             <td><%= athlete.athleteid %></td>
             <td><%= athlete.athfirstname %></td>
             <td><%= athlete.athlastname %></td>
-            <td><%= athlete.schoolid %></td>
-            <td><%= athlete.employeeid %></td>
             <td><%= athlete.phonenumber %></td>
             <td><%= athlete.email %></td>
+            <td><%= athlete.schooldescription %></td>
+            <td><%= athlete.empfirstname + ' ' + athlete.emplastname %></td>
             <td>
+                  <!-- Edit button -->
+              <form action="/statsAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
+                <button type="submit" class="btn-warning">Stats</button>
+              </form>
               <!-- Edit button -->
               <form action="/editAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
                 <button type="submit" class="btn-warning">Edit</button>
@@ -181,5 +190,9 @@
 </div>
   
 </body>
-
+<%} else {%>
+  <h1>Unauthorized Access</h1>
+  <h2>Please Log In</h2>
+  <form action="/login" method="GET"><button type="submit">Log In</button></form>
+  <%}%>
 </html>

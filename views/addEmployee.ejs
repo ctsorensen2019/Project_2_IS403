@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             margin: 0;
-            padding: 0;
+            padding: 3px;
         }
 
         /* Sets styling for the title */
@@ -38,7 +38,8 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: #555;
+            color: black;
+            
         }
 
         /*Sets styling for the rest of the form */
@@ -92,6 +93,7 @@
     </style>
 </head>
 <body>
+  <% if (security) {%>
     <!-- Only the user logged in with admin access can view this page-->
     <!-- security placeholder -->
     <h1>Add Employee</h1>
@@ -155,5 +157,10 @@
     <a href="/employees" class="btn-back">Back to Employees</a>
     <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
     <!-- else statement security placeholder %> -->
-</body>
+    <%} else {%>
+      <h1>Unauthorized Access</h1>
+      <h2>Please Log In</h2>
+      <form action="/login" method="GET"><button type="submit">Log In</button></form>
+      <%}%>
+  </body>
 </html>

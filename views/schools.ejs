@@ -31,7 +31,7 @@
       background-color: #f4f4f4;
       color: #333;
       text-align: center;
-      padding: 20px;
+      padding: 10px;
       margin: 0;
     }
 
@@ -43,8 +43,8 @@
 
     /* Table styling */
     table {
-      width: 90%;
-      max-width: 1200px;
+      width: 95%;
+      /* max-width: 1200px; */
       margin: 20px auto;
       border-collapse: collapse;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -53,7 +53,7 @@
 
     th,
     td {
-      padding: 15px;
+      padding: 2px;
       text-align: center;
       border: 1px solid #ddd;
     }
@@ -92,12 +92,14 @@
     button:hover {
       background-color: #0d0f27;
     }
+
   </style>
 </head>
 
 <body>
+  <% if (security) {%>
   <h1>School Database</h1>
-<div id="athlete_form">
+<div id="athlete-form">
   <!-- Table of athlete -->
   <table>
     <thead>
@@ -155,5 +157,9 @@
 </div>
   
 </body>
-
+<%} else {%>
+  <h1>Unauthorized Access</h1>
+  <h2>Please Log In</h2>
+  <form action="/login" method="GET"><button type="submit">Log In</button></form>
+  <%}%>
 </html>

@@ -31,7 +31,7 @@
       background-color: #f4f4f4;
       color: #333;
       text-align: center;
-      padding: 20px;
+      padding: 10px;
       margin: 0;
     }
 
@@ -43,8 +43,8 @@
 
     /* Table styling */
     table {
-      width: 90%;
-      max-width: 1200px;
+      width: 95%;
+      /* max-width: 1200px; */
       margin: 20px auto;
       border-collapse: collapse;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -53,7 +53,7 @@
 
     th,
     td {
-      padding: 15px;
+      padding: 2px;
       text-align: center;
       border: 1px solid #ddd;
     }
@@ -96,22 +96,21 @@
 </head>
 
 <body>
+  <% if (security == true) {%>
   <h1>Athlete Database</h1>
   <div id="athlete_search">
     <!-- Search form -->
     <!-- Search form -->
     <form action="/searchAthlete" method="GET">
         <label for="first_name">Athlete First Name:</label>
-        <input type="text" id="first_name" name="first_name">
+        <input type="text" id="first_name" name="first_name" value="<%=first_name%>">
         
         <label for="last_name">Athlete Last Name:</label>
-        <input type="text" id="last_name" name="last_name">
-        
-        <label for="sport">Sport:</label>
-        <input type="text" id="sport" name="sport">
+        <input type="text" id="last_name" name="last_name"value="<%=last_name%>">
         
         <button type="submit">Search</button>
       </form>
+      <form action="/showAthlete" method="GET"><button type="submit">Clear Search</button></form>
 </div>
 <div id="athlete_form">
   <!-- Table of athlete -->
@@ -121,51 +120,62 @@
         <th>Athlete ID</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Sport</th>
+        <th>Phone Number</th>
+        <th>Email</th>
         <th>School</th>
-        <th>Statistic</th>
-        <th>Statistic Description</th>
+        <th>Assigned Employee</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% if (athlete && athlete.length > 0) { %>
-        <% athlete.forEach(athlete => { %>
+      <% if (athletes && athletes.length > 0) { %>
+        <% athletes.forEach(athlete => { %>
           <tr>
-            <td><%= athlete.AthleteID %></td>
-            <td><%= athlete.AthFirstName %></td>
-            <td><%= athlete.AthLastName %></td>
-            <td><%= athlete.SportDescription %></td>
-            <td><%= athlete.SchoolDescription %></td>
-            <td><%= athlete.Statistic %></td>
-            <td><%= athlete.StatisticDescription %></td>
+            <td><%= athlete.athleteid %></td>
+            <td><%= athlete.athfirstname %></td>
+            <td><%= athlete.athlastname %></td>
+            <td><%= athlete.phonenumber %></td>
+            <td><%= athlete.email %></td>
+            <td><%= athlete.schooldescription %></td>
+            <td><%= athlete.empfirstname + ' ' + athlete.emplastname %></td>
             <td>
-                <!-- Edit button -->
-                <form action="/editAthlete/<%= row.username %>" method="GET" style="display:inline;">
-                  <button type="submit" class="btn btn-warning">Edit</button>
-                </form>
-                <!-- Delete button with confirmation -->
-                <form action="/deleteAthlete/<%= row.username %>" method="POST" style="display:inline;">
-                  <button type="submit" class="btn btn-warning"
-                    onclick="return confirm('Are you sure you want to delete this record?');">Delete</button>
-                </form>
-              </td>
+                  <!-- Edit button -->
+              <form action="/statsAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
+                <button type="submit" class="btn-warning">Stats</button>
+              </form>
+              <!-- Edit button -->
+              <form action="/editAthlete/<%= athlete.athleteid %>" method="GET" style="display:inline;">
+                <button type="submit" class="btn-warning">Edit</button>
+              </form>
+              <!-- Delete button -->
+              <form action="/deleteAthlete/<%= athlete.athleteid %>" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this athlete?');">
+                <button type="submit" class="btn-danger">Delete</button>
+              </form>
+            </td>
           </tr>
+          
         <% }) %>
       <% } else { %>
-        <!-- Message when no data is available -->
         <tr>
-          <td colspan="7">No data available</td>
+          <td colspan="7">No athletes found.</td>
         </tr>
       <% } %>
     </tbody>
+    
   </table>
   <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
     <!-- Add Athlete Button -->
     <form action="/addAthlete" method="GET">
         <button type="submit">Add Athlete</button>
     </form>
-
+        <!-- Add Athlete Button -->
+        <form action="/schools" method="GET">
+          <button type="submit">Schools</button>
+      </form>
+    <!-- Add Athlete Button -->
+    <form action="/employees" method="GET">
+      <button type="submit">Employees</button>
+  </form>
     <!-- Add User Button -->
     <form action="/" method="GET">
         <button type="submit">Return to Home Page</button>
@@ -174,5 +184,9 @@
 </div>
   
 </body>
-
+<%} else {%>
+  <h1>Unauthorized Access</h1>
+  <h2>Please Log In</h2>
+  <form action="/login" method="GET"><button type="submit">Log In</button></form>
+  <%}%>
 </html>

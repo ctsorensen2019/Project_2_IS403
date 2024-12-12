@@ -3,123 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Athlete</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>Edit Employee</title>
+
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    
     <style>
-        /* Sets the background color for the page */
+        /* General body styling */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Sets styling for the title */
-        h1 {
-            text-align: center;
-            margin-top: 20px;
+            background-color: #f4f4f4;
             color: #333;
-        }
-
-        /* Styling for the form */
-        form {
-            width: 50%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #F9F9F9;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Sets styling for the titles of each input field */
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
-        }
-
-        /*Sets styling for the rest of the form */
-        input, select, button, textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        /* Sets styling for the submit button */
-        button {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Allows for changing of the color of the submit button on hovering over it */
-        button:hover {
-            background-color: #45A049;
-        }
-
-        /* puts margin after the end of the radio group */
-        .radio-group {
-            margin-bottom: 15px;
-        }
-
-        /* Puts margin next to the radio group selection so the buttons are not directly next to them */
-        .radio-group label {
-            margin-right: 15px;
-        }
-
-        /*CSS for the return to home */
-        .btn-back {
-            display: block;
             text-align: center;
-            margin: 20px auto;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
+            padding: 20px;
+            margin: 0;
         }
 
-        /*Hover CSS for the return button */
-        .btn-back:hover {
-            text-decoration: underline;
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background: #fff;
+            margin: 0 auto;
+            padding: 20px;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #293079;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0d0f27;
         }
     </style>
 </head>
 <body>
+    <% if (security) {%>
     <h1>Edit Athlete</h1>
-    <form action="/editAthlete/<%= athlete.athleteid %>" method="POST">
-        <label for="athfirstname">First Name:</label>
-        <input type="text" id="athfirstname" name="athfirstname" value="<%= athlete.athfirstname %>" required>
+    <form action="/editAthlete" method="POST">
+        <!-- Employee ID (hidden field for identifying the record) -->
+        <input type="hidden" id="athleteid" name="athleteid" value="<%= athlete.athleteid %>">
 
-        <label for="athlastname">Last Name:</label>
-        <input type="text" id="athlastname" name="athlastname" value="<%= athlete.athlastname %>" required>
+        <!-- First Name -->
+        <label for="empfirstname">First Name</label>
+        <input type="text" id="empfirstname" name="empfirstname" placeholder="Enter first name" value="<%= athlete.athfirstname %>" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<%= athlete.email %>">
+        <!-- Last Name -->
+        <label for="emplastname">Last Name</label>
+        <input type="text" id="emplastname" name="emplastname" placeholder="Enter last name" value="<%= athlete.athlastname %>" required>
 
-        <label for="phonenumber">Phone Number:</label>
-        <input type="text" id="phonenumber" name="phonenumber" value="<%= athlete.phonenumber %>">
+        <!-- Address -->
+        <label for="address">Phone Number</label>
+        <input type="text" id="address" name="address" placeholder="Enter address" value="<%= athlete.phonenumber %>" required>
 
-        <label for="schoolid">School:</label>
-        <select id="schoolid" name="schoolid" required>
-            <% schools.forEach(school => { %>
-                <option value="<%= school.schoolid %>" <%= athlete.schoolid === school.schoolid ? 'selected' : '' %>><%= school.schooldescription %></option>
-            <% }); %>
-        </select>
+        <!-- City -->
+        <label for="city">Email</label>
+        <input type="text" id="city" name="city" placeholder="Enter city" value="<%= athlete.email %>" required>
 
-        <label for="employeeid">Employee:</label>
-        <select id="employeeid" name="employeeid" required>
-            <% employees.forEach(employee => { %>
-                <option value="<%= employee.employeeid %>" <%= athlete.employeeid === employee.employeeid ? 'selected' : '' %>><%= employee.empfirstname %> <%= employee.emplastname %></option>
-            <% }); %>
-        </select>
+    <!-- Select School -->
+    <label for="schoolid">Select School:</label>
+    <select name="schoolid" id="schoolid" required>
+        <% schools.forEach(school => { %>
+            <option value="<%= school.schoolid %>" <%= athlete.schoolid === school.schoolid ? 'selected' : '' %>><%= school.schooldescription %></option>
+        <% }); %>
+    </select>
 
+    <!-- Select Employee -->
+    <label for="employeeid">Select Employee:</label>
+    <select name="employeeid" id="employeeid" required>
+        <% employees.forEach(employee => { %>
+            <option value="<%= employee.employeeid %>" <%= athlete.employeeid === employee.employeeid ? 'selected' : '' %>><%= employee.empfirstname %> <%= employee.emplastname %></option>
+        <% }); %>
+    </select>
+        
+
+        <!-- Submit Button -->
         <button type="submit">Save Changes</button>
+
     </form>
+    <%} else {%>
+        <h1>Unauthorized Access</h1>
+        <h2>Please Log In</h2>
+        <form action="/login" method="GET"><button type="submit">Log In</button></form>
+        <%}%>
 </body>
 </html>

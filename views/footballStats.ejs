@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Athlete</title>
-    <!--Import the stylesheets from the styling folder-->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <title>Edit Football Stats</title>
+
+    <!-- Include your stylesheets and fonts here -->
+    <link href="/assets/css/main.css" rel="stylesheet">
     <style>
         /* Sets the background color for the page */
         body {
@@ -94,25 +95,21 @@
 </head>
 <body>
     <% if (security) {%>
-    <!-- Only the user logged in with admin access can view this page-->
-    <!-- security placeholder -->
-    <h1>Add School</h1>
-    <!-- Form for adding a user -->
-    <form action="/addSchool" method="POST">
-
-        <!-- First name text input field -->
-        <div>
-            <label for="athfirstname">School Name</label>
-            <input type="text" id="schooldescription" name="schooldescription" placeholder="Enter the school name:" required>
-        </div>
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">Add School</button>
+    <h1>Edit Football Stats</h1>
+    <form action="/footballStats/<%= stats[0].athleteid %>" method="POST">
+        <% stats.forEach(stat => { %>
+          <label for="<%= stat.statisticid %>"><%= stat.statisticdescription %></label>
+          <input type="number" 
+                 id="<%= stat.statisticid %>" 
+                 name="statistic_<%= stat.statisticid %>" 
+                 value="<%= stat.statistic %>" 
+                 required>
+        <% }) %>
+        <button type="submit">Save Changes</button>
+      </form>
+      
+      
     </form>
-
-    <!-- Returns to the maintenance page for volunteers -->
-    <a href="/schools" class="btn-back">Back to Schools</a>
-    <!-- Denies the login if the user is not logged in, or if they do not have admin access -->
-    <!-- else statement security placeholder %> -->
     <%} else {%>
         <h1>Unauthorized Access</h1>
         <h2>Please Log In</h2>
