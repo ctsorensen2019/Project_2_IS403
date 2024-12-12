@@ -130,7 +130,7 @@ app.get('/searchAthlete', (req, res) => {
                 queryBuilder.where('athlastname', 'like', `%${lastNameUpper}%`);
             }
         })
-        .select('athlete.*', 'schools.schooldescription', 'employees.empfirstname', 'employees.emplastname') // Adjust fields if necessary
+        .select('athlete.*', 'school.schooldescription', 'employees.empfirstname', 'employees.emplastname') // Adjust fields if necessary
         .then((athletes) => {
             res.render('searchAthlete', { athletes, first_name, last_name, security, errorMessage: null });
         })
